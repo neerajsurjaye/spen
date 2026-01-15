@@ -109,3 +109,50 @@ So
 -   $\vec{ref} = \vec{A} - 2proj_nA$
 -   $\vec{ref} = \vec{A} - 2proj_nA$
 -   $\vec{ref} = \vec{A} - 2(\vec{A} * \hat{n})\hat{n}$
+
+### Suface normals
+
+Unit vector perpendicular to a suface.\
+Helps calculate reflection, collision, brightness of object etc.
+
+### Decomposing Velocity
+
+Means splliting veclotiy into two vectors along a unit vector. The two vectors are perpendicular and tangent along the unit vector.\
+Ex: The unit vector can be normal of a surface and velocity of object can be taken. This can calculate how fast a object is sliding along a surface and how fast the object is moving into the surface.
+
+### Linear Interpolation
+
+Tells what value lies between two points at a specific distance between them.\
+$LERP(A, B, t) = A + t(B - A)$
+
+or for vectors
+
+$\vec{v}(t)=\vec{A} + t(\vec{B} - \vec{A})$
+
+Can help in
+
+-   Moving object from one position to another.\
+-   For velocity dampning due to say friction or air resistence(How far the object will moving with velocity $\vec{V}$ will reach 0 when lerped with time.)
+    -   $LERP(\vec{V}, 0, t)$
+
+There are other functions which also interpolate in different ways. Say the interpolation is fast at start then slows down at middle.
+
+### Epsilon Comparision
+
+Floating point numbers can seem similar but can be off by a very small number.\
+Epsilon comparision takes small tolerance value. Which basically tells are these numbers close enough.
+
+$|a - b| < \epsilon$
+
+Ex:
+Say $\epsilon$ is 0.000001 and we have two numbers $a = 3.00000000$ and $b = 3.000000001$.
+
+Then a == b will give false.\
+But taking epsion comparision.
+
+$|a - b| < \epsilon$. If nearly equal True else false.
+
+Can be used for
+
+-   Checking if velocity is zero. Say is velocity is nearly zero.
+-   If two surface are in contact. Otherwise the surfaces will never reach each other.
