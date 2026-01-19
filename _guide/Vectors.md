@@ -1,5 +1,3 @@
-# Guide
-
 ## Vectors
 
 Represent direction and magnitude. Can be used to calcuate.
