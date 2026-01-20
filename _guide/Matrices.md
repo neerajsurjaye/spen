@@ -131,3 +131,43 @@ Then Y transforming from X would be .
   A \times M + B \times O & A \times N + B \times P\\
   C \times M + D \times O & C \times N + D \times P
   \end{bmatrix}$
+
+## 2D Matrix
+
+- Represents how vectors transforms over a 2D space.
+- Stores rules for how vectors change over 2D space.
+    - This cannot do translation.
+
+## Scaling Matrix
+
+- Scaling matrix changes the size of vectors.
+    - It can stretch, shrink, flip(negative scale)
+
+- $S = \begin{bmatrix}
+        S_x & 0\\
+        0 & S_y
+        \end{bmatrix}$
+    - If $S_x == S_y$. Then it uniformely scales.
+- Non uniform scaling physics can break it. Thus it is avoided.
+
+## Rotation Matrix
+
+- The below matrix rotates counter-clockwise.
+- $S = \begin{bmatrix}
+        Cos \theta & -Sin \theta\\
+        Sin \theta & Cos \theta
+        \end{bmatrix}$
+- Clockwise rotation
+    - $S = \begin{bmatrix}
+        Cos \theta & Sin \theta\\
+        -Sin \theta & Cos \theta
+        \end{bmatrix}$
+- Note: Always use radians
+    - $radians = degress \times \frac{\pi}{180}$
+
+### Undo rotation
+
+- For rotation transpose = inverse of a matrix.
+    - Inverse = Used to reverse a operation performed by a matrix.
+    - Transpose = Swapping rows and columns
+- This works because rotation matrix are orthogonal.
