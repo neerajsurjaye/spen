@@ -171,3 +171,35 @@ Then Y transforming from X would be .
     - Inverse = Used to reverse a operation performed by a matrix.
     - Transpose = Swapping rows and columns
 - This works because rotation matrix are orthogonal.
+  j
+
+## Applying Transformations (TRS)
+
+Objects do not store the transformed state. But these transformation parameters.
+
+- T : Transform as Vector
+- R : Rotation as angle
+- S : Scale as a vector
+
+When any transformation update comes it is applied on these values.\
+When we want objects transformed state we use these values to create matrices and combine them.
+
+It should be done in this order only $T \cdot{} R \cdot{} S$. Where Scale is applied first then rotation then translation.
+
+**Note: This applies to column vectors**
+
+## Inverse
+
+A inverse matrices undoes the transformatoin done by a matrix.
+
+$A \cdot{} A^{-1} = A^{-1} \cdot{} A = I$
+
+In graphics pipeline just inverse TRS instead of full matrix inversion.
+
+**Note: Inverse doesn't exist if a matrix transforms a vectors to lower dimesnion. Like a 3d space to a plane, line or point.**
+
+- Inverse translation: If translation is $t_x , t_y$ then inverse is $-t_x , -t_y$
+- Inverse rotation: If rotation is $\theta{}$ then inverse is $-\theta{}$.
+- Inverse Scale: If scale is $s_x, s_y$ then inverse is $\frac{1}{s_x} , \frac{1}{s_y}$
+- Inverse TRS: $M^{-1} = S^{-1} \cdot{} R^{-1} \cdot{} T^{-1}$
+    - **In TRS. First scale then rotate then transform. So in inverse first reverse transform then reverse rotate and then reverse scale.**
