@@ -293,7 +293,7 @@ Say a point $P$ and a line with point $A$ and direction $D$.
 - Calculates signed area of polygon.
     - If going CCW it is positive else negative.
 
-- $$Area = \frac{1}{2} \sum_{i=0}^{n-1}(x_i y_{i + 1} - x_{i+1}yi)$$
+- $$Area = \frac{1}{2} \sum_{i=0}^{n-1}(x_i y_{i + 1} - x_{i+1}y_i)$$
 
 ### CCW (Counter Clock Wise)
 
@@ -303,7 +303,7 @@ Say a point $P$ and a line with point $A$ and direction $D$.
 
 ### Edge normals
 
-- Connects two vertices. These have two normals in 2d. Outwards and inwards.
+- Edges connects two vertices. These have two normals in 2d. Outwards and inwards.
 
 ### Point inside convex polygon
 
@@ -327,3 +327,97 @@ Can be tested with below equation.
 
 - Centeroid is polygons center of mass.
     - If uniformely dense.
+
+## Perpendiculars
+
+- Two vectors are perpendicular if they are at 90deg's.
+    - $\vec{a} \cdot \vec{b} = 0$
+
+- Given a 2D vector $\vec{v} = (x, y)$
+    - $\vec{a}_\perp = (-y , x)$
+    - $\vec{a}_\perp = (y , -x)$
+
+- If using CCW use $(-y , x)$ for outward normals.
+- **Normals should be normalized.**
+
+- **Contact Normal** - The normal which is used/chosen during collision.
+    - Say a square. On which a square collided on right edge. The right edges normal is contact normal.
+    - Or say contact normal is edge normal with minimum penetration.
+
+## Projecting Point onto Axis
+
+- Basically means take a point P and an axis a. Tell how much of point p lies on axis.
+    - **Drop a perpendicular from point to axis and mesure wheer it lands**.
+- The axis should be normalized.
+
+- $proj = P \cdot \hat{a}$
+
+- To get the actual projected point on axis.
+    - $P_{proj} = (P \cdot \hat{a})\hat{a}$
+
+### Projecting Shape on Axis
+
+- Take every point of a shape and project it on the axis. Then take the minimum and maxium on the axis.
+- For circle
+    - $c = C \cdot \hat{a}$
+    - $[min, max] = [c - r, c + r]$
+
+- If say
+    - $A = [a_{min}, a_{max}]$
+    - $B = [b_{min}, b_{max}]$
+
+    - The overlap condition\
+      $a_{max} \ge b_{min} \land b_{max} \ge a_{min}$
+
+- If overlapp happens
+    - $penetration = min(a_{max}, b_{max}) - max(a_{min}, b_{min})$
+
+## SAT (Seprating Axis Theorem)
+
+- If two objects are not colliding. Then there is at least one axis where their projections do not overlap.
+    - This axis is called seprating axis.
+
+- Otherwise the objects are colliding.
+
+- For convex polygons, Only edge normals can seprate them.
+    - If two polygons. A and B with edges M and N. Having normals m and n. Then total axis to check is m + n.
+
+- Polygon vs Circle: In case of circle, take a normal from circle center to the closest vertex on polygon. Use it as a axis for SAT.
+
+- AABB vs AABB for these only two axis exists. x and y axis.
+
+- The axis with minimum penetration is the collision normal.
+
+### MTV (Minimum Translation Vector)
+
+- $MTV = {collision \space normal} \times {penetration \space depth} $
+
+- Tells the minimum amount to move both the objects to seprate both objects.
+
+- Also when applying MTV. Move objects by the amount on how movable they are. Usually inverse mass.
+    - If static object. Mass is infinity and inverse mass is 0.
+
+### Collision Geometry Outputs
+
+## Contact Point Calculation
+
+- The point where shapes touch.
+
+### AABB vs AABB
+
+- Compute overlap on x and y.
+- Collision normal = axis with minimum overlap.
+- Contact point = Center of overlapping region on axis.
+    - Find the point on AABB A that is closest to center of B.
+    - $contact.x = clamp(centerB.x, minA.x, maxA.x)$
+    - $contact.y = clamp(centerB.y, minA.y, maxA.y)$
+
+### Circle vs Circle
+
+- $normal = normalize(centerB - centerA)$
+- $contact = centerA + normal * radiusA$
+    - Basically start of center of circle A and move along collsion normal radiusA times.
+
+### Polygon vs Polygon
+
+-
