@@ -402,6 +402,7 @@ Can be tested with below equation.
 ## Contact Point Calculation
 
 - The point where shapes touch.
+- Single contact point can cause roatational jitter so multiple contact points can be used.
 
 ### AABB vs AABB
 
@@ -420,4 +421,24 @@ Can be tested with below equation.
 
 ### Polygon vs Polygon
 
--
+- Use reference edge. The edge which gave normal for MTV.
+- Project incident polygon vertices on that edge.
+- Pick deepest penetrating vertex.
+
+## Collision Normal Selection
+
+- Tells which direction to push objects apart.
+- Which direction impulse act.
+- Normal comes from from the axis with minimum penetration depth.
+
+## Parallel Near Parallel Cases
+
+- Check with cross product.
+- $prod = cross(e_1, e_2)$
+- $if(abs(prod) < epsilon)$
+    - epsilon = 1e+9
+
+## Degenerate Edges
+
+- Edges with very small length.
+- Skip them. Say $len(edge) < epsilon$ skip them
