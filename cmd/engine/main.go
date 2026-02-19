@@ -1,7 +1,9 @@
 package main
 
 import (
-	"github.com/neerajsurjaye/spen/internal/mesh"
+	"fmt"
+
+	"github.com/neerajsurjaye/spen/internal/builder"
 	"github.com/neerajsurjaye/spen/internal/model"
 	"github.com/neerajsurjaye/spen/internal/simulation"
 	"github.com/neerajsurjaye/spen/internal/state"
@@ -16,12 +18,19 @@ func main() {
 	engine.GlfwState.Window = simulation.InitGlfw()
 	simulation.InitOpenGl()
 
-	var circle mesh.CircleInfo = mesh.GetCircle(0,0,1)
-	circle.ComputeCircleVAO()
-	circle.AttachShader("shader/circle/circle.frag", "shader/circle/circle.vert")
-	circle.SetColor(1, 1, 1, 1)
 
-	engine.Circle = circle
+	circleBuilder := builder.GetCircleBuilder().
+										Compute().
+										SetShaders("shader/circle/circle.frag", "shader/circle/circle.vert")
+
+	circle1 := circleBuilder.Build()
+	circle2 := circleBuilder.Build()
+
+
+	fmt.Println(circle1 , " " , circle2)
+
+	circle2.SetColor(1, 0.5, 1, 1)
+	engine.Circle = circle2
 
 	simulation.StartLoop()
 	
