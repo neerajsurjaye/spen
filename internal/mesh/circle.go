@@ -46,5 +46,11 @@ func (c *CircleInfo) Draw(){
 	colorLoc := gl.GetUniformLocation(c.prog, gl.Str("uColor\x00"))
 	gl.Uniform4f(colorLoc, c.circleColor[0], c.circleColor[1], c.circleColor[2], c.circleColor[3])
 
+	posLoc := gl.GetUniformLocation(c.prog, gl.Str("uPos\x00"))
+	gl.Uniform2f(posLoc, float32(c.Transform.X), float32(c.Transform.Y))
+
+	radiusLoc := gl.GetUniformLocation(c.prog, gl.Str("uRadius\x00"))
+	gl.Uniform1f(radiusLoc, float32(c.Transform.R))
+
 	gl.DrawArrays(gl.TRIANGLE_FAN, 0 , 4)
 }

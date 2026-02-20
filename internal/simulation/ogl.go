@@ -12,6 +12,7 @@ func InitOpenGl() {
 		log.Fatalln(err)
 	}
 
+	world := state.WorldInstance()
 	uiInfo := state.EngineInstance().UiInfo
 
 	version := gl.GoStr(gl.GetString(gl.VERSION))	
@@ -22,16 +23,17 @@ func InitOpenGl() {
 	log.Println("Renderer       :", renderer)
 	log.Println("Vendor         :", vendor)
 
+	
 	//TODo: use global state here
 	gl.Viewport(0,0 , int32(uiInfo.Width), int32(uiInfo.Height))
-	gl.ClearColor(0.1, 0.2, 0.8, 0)
+	gl.ClearColor(world.Background.R, world.Background.G, world.Background.B, world.Background.A)
 }
 
 func Render() {
 
 	gl.Clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
-	engine := state.EngineInstance()
-
-	engine.Circle.Draw()
+	// engine := state.EngineInstance()
+	world := state.WorldInstance()
+	world.Draw()
 
 }
