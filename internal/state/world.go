@@ -6,6 +6,9 @@ import (
 	"github.com/neerajsurjaye/spen/internal/model"
 )
 
+/*
+Contains information related to the world running inside engine.
+*/
 type World struct {
 	Camera model.Camera
 	Circles []mesh.CircleInfo

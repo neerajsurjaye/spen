@@ -42,6 +42,7 @@ func (cb *CircleBuilder) SetShaders(fragShaderPath string, vertexShaderPath stri
 
 func (cb *CircleBuilder) Compute() *CircleBuilder{
 	cb.computeCircleVAO()
+	cb.SetShaders("shader/circle/circle.frag", "shader/circle/circle.vert")
 	return cb
 }	
 
@@ -52,7 +53,6 @@ func (cb *CircleBuilder) Build() mesh.CircleInfo{
 	if cb.prog == 0{
 		panic("Shader not implemented. Call CircleBuilder.SetShaders() before CircleBuilder.Build()")
 	}
-
 
 	return mesh.GetCircle(cb.vao, cb.vbo, cb.prog)
 }

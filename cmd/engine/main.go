@@ -16,20 +16,19 @@ func main() {
 	engine := state.EngineInstance()
 	world := state.WorldInstance()
 
+	engine.UiInfo = model.UiInfo{Width: 800, Height: 800, Title: "Spectres Physics Engine"}
+	engine.GlfwState.Window = simulation.InitGlfw()
+
 	world.SetCamera(0, 0)
 	world.SetBackground(0.8, 1, 0.7, 1)
 
-	engine.UiInfo = model.UiInfo{Width: 800, Height: 800, Title: "Spectres Physics Engine"}
-	engine.GlfwState.Window = simulation.InitGlfw()
 	simulation.InitOpenGl()
 
-	circleBuilder := builder.GetCircleBuilder().
-										Compute().
-										SetShaders("shader/circle/circle.frag", "shader/circle/circle.vert")
+	circleBuilder := builder.GetCircleBuilder().Compute()
+
 	circle1 := circleBuilder.Build()
 	circle2 := circleBuilder.Build()
 	circle3 := circleBuilder.Build()
-
 
 	fmt.Println(circle1 , " " , circle2 , " " , circle3)
 
@@ -40,11 +39,11 @@ func main() {
 	circle1.SetTransform(100, 200, 50)
 
 	circle3.SetColor(0.8, 0.7, 0.9, 1)
-	circle3.SetTransform(700, 900, 800)
+	circle3.SetTransform(700, 900, 400)
 
 	world.AddCircle(circle1)
-	world.AddCircle(circle3)
 	world.AddCircle(circle2)
+	world.AddCircle(circle3)
 
 	simulation.StartLoop()
 	

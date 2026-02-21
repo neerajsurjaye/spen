@@ -40,8 +40,16 @@ func (c *CircleInfo) SetTransform(x float64, y float64, r float64){
 	c.Transform = circleTransform
 }
 
-func (c *CircleInfo) GetTranslation() mgl32.Mat4{
+func (c *CircleInfo) getTranslation() mgl32.Mat4{
 	return mgl32.Translate3D(float32(c.Transform.X), float32(c.Transform.Y), 0);
+}
+
+func (c *CircleInfo) getScale() mgl32.Mat4{
+	return mgl32.Scale3D(float32(c.Transform.R), float32(c.Transform.R), 1)
+}
+
+func (c *CircleInfo) GetModel() mgl32.Mat4{
+	return c.getTranslation().Mul4(c.getScale())
 }
 
 func (c *CircleInfo) Draw(projection mgl32.Mat4, view mgl32.Mat4){
@@ -54,13 +62,10 @@ func (c *CircleInfo) Draw(projection mgl32.Mat4, view mgl32.Mat4){
 
 	mvp := projection.
 				Mul4(view).
-				Mul4(c.GetTranslation())
+				Mul4(c.GetModel())
 
 	mvpLoc := gl.GetUniformLocation(c.prog, gl.Str("uMVP\x00"))
 	gl.UniformMatrix4fv(mvpLoc, 1, false, &mvp[0])
-
-	radiusLoc := gl.GetUniformLocation(c.prog, gl.Str("uRadius\x00"))
-	gl.Uniform1f(radiusLoc, float32(c.Transform.R))
 
 	gl.DrawArrays(gl.TRIANGLE_FAN, 0 , 4)
 }
