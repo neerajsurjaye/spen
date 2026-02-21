@@ -68,11 +68,34 @@ func StartLoop() {
 
 func draw() bool{
 
+	world := state.WorldInstance()
+
 	window := state.EngineInstance().GlfwState.Window
 	window.SwapBuffers()
 	glfw.PollEvents()
 
 	Render()
+
+	if window.GetKey(glfw.KeyW) == glfw.Press{
+		world.Camera.MoveDelta(0, 10)
+	}
+
+	if window.GetKey(glfw.KeyS) == glfw.Press{
+		world.Camera.MoveDelta(0, -10)
+	}
+
+	if window.GetKey(glfw.KeyA) == glfw.Press{
+		world.Camera.MoveDelta(-10, 0)
+	}
+
+	if window.GetKey(glfw.KeyD) == glfw.Press{
+		world.Camera.MoveDelta(+10, 0)
+	}
+
+	if window.GetKey(glfw.KeyR) == glfw.Press{
+		world.Camera.X = 0
+		world.Camera.Y = 0
+	}
 
 	if window.GetKey(glfw.KeyEscape) == glfw.Press{
 		return false
