@@ -26,6 +26,7 @@ func main() {
 	simulation.InitOpenGl()
 
 	world.DebugLines.Init(utils.CreateProgram("shader/line/line.frag" , "shader/line/line.vert"))
+	world.Grid.Init(50, 400) 
 
 
 	circleBuilder := builder.GetCircleBuilder().Compute()

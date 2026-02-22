@@ -14,6 +14,7 @@ type World struct {
 	Circles []mesh.CircleInfo
 	DebugLines mesh.DebugLines
 	Background model.Color
+	Grid mesh.Grid
 }
 
 var world *World = nil
@@ -63,4 +64,6 @@ func (w *World) Draw(){
 	}
 
 	w.DebugLines.Draw(w.GetOrthoProjection(), w.Camera.View())
+	w.Grid.Draw(w.Camera, w.GetOrthoProjection(), w.Camera.View())
+	
 }
