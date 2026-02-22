@@ -30,3 +30,37 @@ func CompileShader(source string, shaderType uint32) (uint32, error){
 
 	return shader, nil
 }
+
+func CreateProgram(fragShaderPath string, vertexShaderPath string) uint32{
+	//Use gl.shaderType to match shader here
+	fragShaderSrc, err := ReadShader(fragShaderPath)
+	if err != nil{
+		panic(err)
+	}
+	vertexShaderSrc, err := ReadShader(vertexShaderPath)
+	if err != nil{
+		panic(err)
+	}
+
+	fragShader, err := CompileShader(fragShaderSrc, gl.FRAGMENT_SHADER)
+	if err != nil{
+		panic(err)
+	}
+
+	vertexShader, err := CompileShader(vertexShaderSrc, gl.VERTEX_SHADER)
+	if err != nil{
+		panic(err)
+	}
+
+	prog := gl.CreateProgram()
+	gl.AttachShader(prog, vertexShader)
+	gl.AttachShader(prog, fragShader)
+	gl.LinkProgram(prog)
+
+	CheckProgLinkStatus(prog)
+
+	gl.DeleteShader(fragShader)
+	gl.DeleteShader(vertexShader)
+
+	return prog
+}

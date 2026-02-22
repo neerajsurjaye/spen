@@ -49,6 +49,9 @@ func StartLoop() {
 			accumulator -= FIXED_DT
 		}
 
+		state.WorldInstance().DebugLines.AddLine(0,0, 100, 100)
+		state.WorldInstance().DebugLines.AddLine(100,0, 100, 0)
+		state.WorldInstance().DebugLines.AddLine(0,50, 50, 0)
 		running = draw()
 
 		if(TARGET_FPS > 0){

@@ -60,7 +60,7 @@ func (c *CircleInfo) Draw(projection mgl32.Mat4, view mgl32.Mat4){
 	colorLoc := gl.GetUniformLocation(c.prog, gl.Str("uColor\x00"))
 	gl.Uniform4f(colorLoc, c.circleColor[0], c.circleColor[1], c.circleColor[2], c.circleColor[3])
 
-	mvp := projection.
+	mvp := projection.	
 				Mul4(view).
 				Mul4(c.GetModel())
 

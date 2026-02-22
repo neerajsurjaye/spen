@@ -76,42 +76,14 @@ func (cb *CircleBuilder) computeCircleVAO(){
 	gl.VertexAttribPointer(0, 2, gl.FLOAT, false, 0, nil)
 	gl.EnableVertexAttribArray(0)
 
+	gl.BindBuffer(gl.ARRAY_BUFFER, 0)
+	gl.BindVertexArray(0)
 	cb.vao = vao
 	cb.vbo = vbo
 }
 
 func (cb *CircleBuilder) attachShader(fragShaderPath string, vertexShaderPath string){
-	//Use gl.shaderType to match shader here
-	fragShaderSrc, err := utils.ReadShader(fragShaderPath)
-	if err != nil{
-		panic(err)
-	}
-	vertexShaderSrc, err := utils.ReadShader(vertexShaderPath)
-	if err != nil{
-		panic(err)
-	}
-
-	fragShader, err := utils.CompileShader(fragShaderSrc, gl.FRAGMENT_SHADER)
-	if err != nil{
-		panic(err)
-	}
-
-	vertexShader, err := utils.CompileShader(vertexShaderSrc, gl.VERTEX_SHADER)
-	if err != nil{
-		panic(err)
-	}
-
-	prog := gl.CreateProgram()
-	gl.AttachShader(prog, vertexShader)
-	gl.AttachShader(prog, fragShader)
-	gl.LinkProgram(prog)
-
-	utils.CheckProgLinkStatus(prog)
-
-	cb.prog = prog
-
-	gl.DeleteShader(fragShader)
-	gl.DeleteShader(vertexShader)
-
+	//TODO: Check this part
+	cb.prog = utils.CreateProgram(fragShaderPath, vertexShaderPath)
 }
 

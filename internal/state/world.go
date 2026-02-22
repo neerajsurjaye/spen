@@ -12,6 +12,7 @@ Contains information related to the world running inside engine.
 type World struct {
 	Camera model.Camera
 	Circles []mesh.CircleInfo
+	DebugLines mesh.DebugLines
 	Background model.Color
 }
 
@@ -61,4 +62,5 @@ func (w *World) Draw(){
 		w.Circles[circle].Draw(w.GetOrthoProjection(), w.Camera.View())
 	}
 
+	w.DebugLines.Draw(w.GetOrthoProjection(), w.Camera.View())
 }

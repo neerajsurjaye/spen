@@ -7,6 +7,7 @@ import (
 	"github.com/neerajsurjaye/spen/internal/model"
 	"github.com/neerajsurjaye/spen/internal/simulation"
 	"github.com/neerajsurjaye/spen/internal/state"
+	"github.com/neerajsurjaye/spen/internal/utils"
 )
 
 func main() {
@@ -23,6 +24,9 @@ func main() {
 	world.SetBackground(0.8, 1, 0.7, 1)
 
 	simulation.InitOpenGl()
+
+	world.DebugLines.Init(utils.CreateProgram("shader/line/line.frag" , "shader/line/line.vert"))
+
 
 	circleBuilder := builder.GetCircleBuilder().Compute()
 
