@@ -3,7 +3,9 @@ package simulation
 import (
 	"time"
 
+	"github.com/go-gl/gl/all-core/gl"
 	"github.com/go-gl/glfw/v3.3/glfw"
+	"github.com/neerajsurjaye/spen/internal/model"
 	"github.com/neerajsurjaye/spen/internal/state"
 )
 
@@ -42,17 +44,19 @@ func StartLoop() {
 		accumulator += frameTime	
 
 
-		// log.Log("Render loop at : " , now , accumulator)
+		// fmt.Println("Render loop at : " , now , accumulator)
 		for accumulator >= FIXED_DT{
 			//Perform physics
 			// log.Log("Perfoming Physics at : " , now , accumulator)
 			accumulator -= FIXED_DT
 		}
 
-		state.WorldInstance().DebugLines.AddLine(0,0, 100, 100)
-		state.WorldInstance().DebugLines.AddLine(100,0, 100, 0)
-		state.WorldInstance().DebugLines.AddLine(0,50, 50, 0)
+		debugColor := model.GetColor(1, 0 ,0, 1)
+		state.WorldInstance().DebugLines.AddLine(-100, -100, 100, 100, debugColor)
+		
 		running = draw()
+
+		time.Sleep(time.Millisecond)
 
 		if(TARGET_FPS > 0){
 			frameDuration := time.Since(frameStart)
@@ -72,12 +76,11 @@ func StartLoop() {
 func draw() bool{
 
 	world := state.WorldInstance()
-
 	window := state.EngineInstance().GlfwState.Window
+
 	window.SwapBuffers()
 	glfw.PollEvents()
 
-	Render()
 
 	if window.GetKey(glfw.KeyW) == glfw.Press{
 		world.Camera.MoveDelta(0, 10)
@@ -100,8 +103,25 @@ func draw() bool{
 		world.Camera.Y = 0
 	}
 
+	if window.GetKey(glfw.KeyI) == glfw.Press{
+		world.DebugDraw = !world.DebugDraw
+	}
+
 	if window.GetKey(glfw.KeyEscape) == glfw.Press{
 		return false
 	}
+
+	Render()
+
 	return true
+}
+
+
+func Render() {
+
+	gl.Clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
+	// engine := state.EngineInstance()
+	world := state.WorldInstance()
+	world.Draw()
+
 }

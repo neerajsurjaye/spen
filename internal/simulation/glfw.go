@@ -25,7 +25,9 @@ func InitGlfw() *glfw.Window{
 		panic(err)
 	}
 
+	window.SetInputMode(glfw.StickyKeysMode, glfw.False)
 	window.MakeContextCurrent()
+	glfw.SwapInterval(0)
 
 	return window
 }

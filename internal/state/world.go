@@ -4,6 +4,7 @@ import (
 	"github.com/go-gl/mathgl/mgl32"
 	"github.com/neerajsurjaye/spen/internal/mesh"
 	"github.com/neerajsurjaye/spen/internal/model"
+	"github.com/neerajsurjaye/spen/internal/renderer"
 )
 
 /*
@@ -11,19 +12,19 @@ Contains information related to the world running inside engine.
 */
 type World struct {
 	Camera model.Camera
-	Circles []mesh.CircleInfo
+	Circles []*model.Circle
+	CircleMesh mesh.CircleMesh
 	DebugLines mesh.DebugLines
 	Background model.Color
 	Grid mesh.Grid
+	DebugDraw bool
 }
 
 var world *World = nil
 
 func InitWorld(){
 	if world == nil{
-		world = &World{
-			Circles: []mesh.CircleInfo{},
-		}
+		world = &World{}
 	}
 }
 
@@ -31,7 +32,7 @@ func WorldInstance() *World{
 	return world
 }
 
-func (w *World) AddCircle(c mesh.CircleInfo){
+func (w *World) AddCircle(c *model.Circle){
 	w.Circles = append(w.Circles, c)
 }
 
@@ -59,11 +60,27 @@ func (w *World) GetOrthoProjection() mgl32.Mat4{
 }
 
 func (w *World) Draw(){
-	for circle := range(w.Circles){
-		w.Circles[circle].Draw(w.GetOrthoProjection(), w.Camera.View())
+
+
+	renderContext := &renderer.RenderContext{
+		OrthoProjection: w.GetOrthoProjection(),
+		ViewMat: w.Camera.View(),
+		Camera: w.Camera,
+		DebugDraw: w.DebugDraw,
 	}
 
-	w.DebugLines.Draw(w.GetOrthoProjection(), w.Camera.View())
-	w.Grid.Draw(w.Camera, w.GetOrthoProjection(), w.Camera.View())
+	for idx := range(w.Circles){
+		w.CircleMesh.Draw(renderContext, w.Circles[idx])
+	}
+
+	if w.DebugDraw{
+		var aabbDebugColor model.Color = model.Color{R: 1.0, G: 1.0, B: 0.2, A: 1} 
+
+		w.Grid.Debug(renderContext, &w.DebugLines)
+		for idx := range(w.Circles){
+			mesh.DebugAABB(&w.DebugLines, &w.Circles[idx].AABB, &aabbDebugColor)
+		}
+		w.DebugLines.Draw(renderContext)
+	}
 	
 }

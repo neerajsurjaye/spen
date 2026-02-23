@@ -28,12 +28,3 @@ func InitOpenGl() {
 	gl.Viewport(0,0 , int32(uiInfo.Width), int32(uiInfo.Height))
 	gl.ClearColor(world.Background.R, world.Background.G, world.Background.B, world.Background.A)
 }
-
-func Render() {
-
-	gl.Clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
-	// engine := state.EngineInstance()
-	world := state.WorldInstance()
-	world.Draw()
-
-}

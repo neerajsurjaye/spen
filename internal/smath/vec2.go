@@ -20,7 +20,7 @@ func (a Vec2) Multiply(magnitude float64) Vec2 {
 }
 
 func (a Vec2) Divide(magnitude float64) Vec2 {
-	if(math.Abs(magnitude) < Epsilon){
+	if(math.Abs(magnitude) < EpsilonF64){
 		return Vec2{0, 0}
 	}
 
@@ -40,7 +40,7 @@ func (a Vec2) Magnitude() float64 {
 func (a Vec2) Normalize() Vec2{
 	aMagntude := a.Magnitude()
 
-	if(aMagntude < Epsilon){
+	if(aMagntude < EpsilonF64){
 		return Vec2{0 , 0}
 	}
 
@@ -60,7 +60,7 @@ func (a Vec2) Angle(b Vec2) float64{
 	dotProd := a.Dot(b)
 	magnitude := (a.Magnitude() * b.Magnitude())
 
-	if magnitude < Epsilon{
+	if magnitude < EpsilonF64{
 		return 0
 	}
 

@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"runtime"
 
 	"github.com/neerajsurjaye/spen/internal/builder"
 	"github.com/neerajsurjaye/spen/internal/model"
@@ -9,6 +10,11 @@ import (
 	"github.com/neerajsurjaye/spen/internal/state"
 	"github.com/neerajsurjaye/spen/internal/utils"
 )
+
+func init(){
+	// Locks the thread to one OS thread. Open gl issue.
+	runtime.LockOSThread()
+}
 
 func main() {
 
@@ -21,31 +27,26 @@ func main() {
 	engine.GlfwState.Window = simulation.InitGlfw()
 
 	world.SetCamera(0, 0)
-	world.SetBackground(0.8, 1, 0.7, 1)
+	world.SetBackground(0.2, 0.2, 0.2, 1)
 
 	simulation.InitOpenGl()
 
 	world.DebugLines.Init(utils.CreateProgram("shader/line/line.frag" , "shader/line/line.vert"))
-	world.Grid.Init(50, 400) 
+	world.Grid.Init(100, 500) 
 
 
 	circleBuilder := builder.GetCircleBuilder().Compute()
 
-	circle1 := circleBuilder.Build()
-	circle2 := circleBuilder.Build()
-	circle3 := circleBuilder.Build()
+	circleMesh := circleBuilder.Build()
 
-	fmt.Println(circle1 , " " , circle2 , " " , circle3)
+	fmt.Println(circleMesh)
 
-	circle2.SetColor(0.5, 1, 1, 1)
-	circle2.SetTransform(-400, -400, 100)
+	world.CircleMesh = circleMesh
 
-	circle1.SetColor(0.5, 1, 1, 1)
-	circle1.SetTransform(100, 200, 50)
-
-	circle3.SetColor(0.8, 0.7, 0.9, 1)
-	circle3.SetTransform(700, 900, 400)
-
+	greatColor := model.Color{R: 0.5, G: 1, B: 1, A: 1}
+	circle1 := model.GetCircle(0, 0 , 100, greatColor)
+	circle2 := model.GetCircle(500.2, 400 , 230, greatColor)
+	circle3 := model.GetCircle(-250, 400 , 120, greatColor)
 	world.AddCircle(circle1)
 	world.AddCircle(circle2)
 	world.AddCircle(circle3)

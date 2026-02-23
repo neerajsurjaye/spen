@@ -46,7 +46,7 @@ func (cb *CircleBuilder) Compute() *CircleBuilder{
 	return cb
 }	
 
-func (cb *CircleBuilder) Build() mesh.CircleInfo{
+func (cb *CircleBuilder) Build() mesh.CircleMesh{
 	if cb.vao == 0 || cb.vbo == 0{
 		panic("Circle VAO not implemented. Call CircleBuilder.Compute() before CircleBuilder.Build()")
 	}

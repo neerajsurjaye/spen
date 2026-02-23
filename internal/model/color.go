@@ -6,3 +6,7 @@ type Color struct {
 	B float32
 	A float32
 }
+
+func GetColor(r, g, b, a float32) *Color {
+	return &Color{R: r, G: g, B: b, A: a}
+}
