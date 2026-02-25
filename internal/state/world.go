@@ -79,6 +79,7 @@ func (w *World) Draw(){
 		w.Grid.Debug(renderContext, &w.DebugLines)
 		for idx := range(w.Circles){
 			mesh.DebugAABB(&w.DebugLines, &w.Circles[idx].AABB, &aabbDebugColor)
+			mesh.DebugTransform(&w.DebugLines, &w.Circles[idx].Transform)
 		}
 		w.DebugLines.Draw(renderContext)
 	}

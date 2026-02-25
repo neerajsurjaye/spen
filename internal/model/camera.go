@@ -1,8 +1,6 @@
 package model
 
 import (
-	"fmt"
-
 	"github.com/go-gl/mathgl/mgl32"
 )
 
@@ -20,5 +18,5 @@ func (c *Camera) MoveDelta(dx float32, dy float32){
 	c.X += dx
 	c.Y += dy
 
-	fmt.Println(c)
+	// fmt.Println(c)
 }

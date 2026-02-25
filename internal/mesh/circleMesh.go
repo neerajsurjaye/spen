@@ -32,7 +32,7 @@ func (c *CircleMesh) Draw(rc *renderer.RenderContext, circle *model.Circle){
 
 	mvp := rc.OrthoProjection.	
 				Mul4(rc.ViewMat).
-				Mul4(circle.GetModel())
+				Mul4(circle.Transform.GetModel())
 
 	mvpLoc := gl.GetUniformLocation(c.prog, gl.Str("uMVP\x00"))
 	gl.UniformMatrix4fv(mvpLoc, 1, false, &mvp[0])

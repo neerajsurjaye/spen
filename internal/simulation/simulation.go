@@ -1,10 +1,12 @@
 package simulation
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/go-gl/gl/all-core/gl"
 	"github.com/go-gl/glfw/v3.3/glfw"
+	"github.com/neerajsurjaye/spen/internal/force"
 	"github.com/neerajsurjaye/spen/internal/model"
 	"github.com/neerajsurjaye/spen/internal/state"
 )
@@ -18,6 +20,7 @@ func StartLoop() {
 	lastTime := time.Now()
 	accumulator := 0.0
 
+	w := state.WorldInstance()
 	// log := logger.NewLogger(100)
 
 	var targetFrameTime time.Duration
@@ -47,12 +50,12 @@ func StartLoop() {
 		// fmt.Println("Render loop at : " , now , accumulator)
 		for accumulator >= FIXED_DT{
 			//Perform physics
+			for idx := range(w.Circles){
+				performPhysics(w.Circles[idx], FIXED_DT)
+			}
 			// log.Log("Perfoming Physics at : " , now , accumulator)
 			accumulator -= FIXED_DT
 		}
-
-		debugColor := model.GetColor(1, 0 ,0, 1)
-		state.WorldInstance().DebugLines.AddLine(-100, -100, 100, 100, debugColor)
 		
 		running = draw()
 
@@ -124,4 +127,18 @@ func Render() {
 	world := state.WorldInstance()
 	world.Draw()
 
+}
+
+func performPhysics(circle *model.Circle, dt float32){
+	body := circle.GetBody()
+
+	gravity := force.NewGravity()
+
+	body.AddForce(gravity.GetForce(body.Mass))
+
+	body.Integrate(dt)
+
+	newPosition := circle.Transform.Position.Add(body.Velocity.Multiply(dt))
+	fmt.Println("Diff Position ", circle.Transform.Position.Subtract(newPosition))
+	circle.SetPosition(&newPosition)
 }

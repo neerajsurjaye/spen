@@ -31,7 +31,7 @@ func (g *Grid) Debug(rc *renderer.RenderContext, debugLines *DebugLines) {
 
 	for x := startX - g.visibleRange; x <= startX + g.visibleRange; x += g.spacing{
 		if smath.EpsilonEqualF32(x , 0){
-			debugLines.AddLine(x , camera.Y - g.visibleRange, x , camera.Y + g.visibleRange, xAxisCol)
+			debugLines.AddLine(x , camera.Y - g.visibleRange, x , camera.Y + g.visibleRange, yAxisCol)
 			continue	
 		}
 		debugLines.AddLine(x , camera.Y - g.visibleRange, x , camera.Y + g.visibleRange, gridColor)	
@@ -39,7 +39,7 @@ func (g *Grid) Debug(rc *renderer.RenderContext, debugLines *DebugLines) {
 
 	for y := startY - g.visibleRange; y <= startY + g.visibleRange; y += g.spacing{
 		if smath.EpsilonEqualF32(y , 0){
-			debugLines.AddLine(camera.X - g.visibleRange, y, camera.X + g.visibleRange, y, yAxisCol)
+			debugLines.AddLine(camera.X - g.visibleRange, y, camera.X + g.visibleRange, y, xAxisCol)
 			continue	
 		}
 		debugLines.AddLine(camera.X - g.visibleRange, y, camera.X + g.visibleRange, y, gridColor)

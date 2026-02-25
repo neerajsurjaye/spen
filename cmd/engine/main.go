@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math"
 	"runtime"
 
 	"github.com/neerajsurjaye/spen/internal/builder"
@@ -43,13 +44,20 @@ func main() {
 
 	world.CircleMesh = circleMesh
 
-	greatColor := model.Color{R: 0.5, G: 1, B: 1, A: 1}
-	circle1 := model.GetCircle(0, 0 , 100, greatColor)
-	circle2 := model.GetCircle(500.2, 400 , 230, greatColor)
-	circle3 := model.GetCircle(-250, 400 , 120, greatColor)
+	greatColor := model.Color{R: 0.5, G: .5, B: .2, A: 1}
+	circle1 := model.GetCircle(0, 0 , 100, 0, greatColor)
+	circle2 := model.GetCircle(500.2, 400 , 230, math.Pi / 2, greatColor)
+	circle3 := model.GetCircle(-250, 400 , 120, math.Pi / 3, greatColor)
+
+	circle1.SetBody(0, 0, 100)
+	circle2.SetBody(0, 0, 500)
+	circle3.SetBody(0, 0, 1000)
+
 	world.AddCircle(circle1)
 	world.AddCircle(circle2)
 	world.AddCircle(circle3)
+
+	fmt.Println("Initial circle " , circle1.GetBody())
 
 	simulation.StartLoop()
 	
