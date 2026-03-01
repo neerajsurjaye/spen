@@ -56,6 +56,16 @@ func (cb *WallBuilder) Build() mesh.WallMesh{
 	return mesh.GetWall(cb.vao, cb.vbo, cb.prog)
 }
 
+func (cb *WallBuilder) BuildObject() mesh.ObjectMesh{
+	if cb.vao == 0 || cb.vbo == 0{
+		panic("Wall VAO not implemented. Call WallBuilder.Compute() before WallBuilder.Build()")
+	}
+	if cb.prog == 0{
+		panic("Shader not implemented. Call WallBuilder.SetShaders() before WallBuilder.Build()")
+	}
+	return mesh.GetObjectMesh(cb.vao, cb.vbo, cb.prog)
+}
+
 func (cb *WallBuilder) computeWallVAO(){
 	var vao, vbo uint32
 

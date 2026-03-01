@@ -57,6 +57,17 @@ func (cb *CircleBuilder) Build() mesh.CircleMesh{
 	return mesh.GetCircle(cb.vao, cb.vbo, cb.prog)
 }
 
+func (cb *CircleBuilder) BuildObject() mesh.ObjectMesh{
+	if cb.vao == 0 || cb.vbo == 0{
+		panic("Circle VAO not implemented. Call CircleBuilder.Compute() before CircleBuilder.Build()")
+	}
+	if cb.prog == 0{
+		panic("Shader not implemented. Call CircleBuilder.SetShaders() before CircleBuilder.Build()")
+	}
+
+	return mesh.GetObjectMesh(cb.vao, cb.vbo, cb.prog)
+}
+
 func (cb *CircleBuilder) computeCircleVAO(){
 	var vao, vbo uint32
 

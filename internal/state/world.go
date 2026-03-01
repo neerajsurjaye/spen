@@ -12,10 +12,9 @@ Contains information related to the world running inside engine.
 */
 type World struct {
 	Camera model.Camera
-	Circles []*model.Circle
-	Walls []*model.Wall
-	CircleMesh mesh.CircleMesh
-	WallMesh mesh.WallMesh
+	WorldObjects []model.WorldObject
+	WorldObjectMesh []mesh.ObjectMesh
+
 	DebugLines mesh.DebugLines
 	Background model.Color
 	Grid mesh.Grid
@@ -34,12 +33,9 @@ func WorldInstance() *World{
 	return world
 }
 
-func (w *World) AddCircle(c *model.Circle){
-	w.Circles = append(w.Circles, c)
-}
-
-func (w *World) AddWall(wall *model.Wall){
-	w.Walls = append(w.Walls, wall)
+func (w *World) AddObject(obj model.WorldObject, mesh mesh.ObjectMesh){
+	w.WorldObjects = append(w.WorldObjects, obj)
+	w.WorldObjectMesh = append(w.WorldObjectMesh, mesh)
 }
 
 func (w *World) SetBackground(r float32, g float32, b float32, a float32){
@@ -75,24 +71,19 @@ func (w *World) Draw(){
 		DebugDraw: w.DebugDraw,
 	}
 
-	for idx := range(w.Circles){
-		w.CircleMesh.Draw(renderContext, w.Circles[idx])
-	}
-
-	for idx := range(w.Walls){
-		w.WallMesh.Draw(renderContext, w.Walls[idx])
+	for idx := range(w.WorldObjects){
+		w.WorldObjectMesh[idx].Draw(renderContext, w.WorldObjects[idx])
 	}
 
 	if w.DebugDraw{
 		var aabbDebugColor model.Color = model.Color{R: 1.0, G: 1.0, B: 0.2, A: 1} 
 		velColor := model.GetColor(1, 0 , 0 , 1)
 
-
 		w.Grid.Debug(renderContext, &w.DebugLines)
-		for idx := range(w.Circles){
-			mesh.DebugAABB(&w.DebugLines, &w.Circles[idx].AABB, &aabbDebugColor)
-			mesh.DebugTransform(&w.DebugLines, &w.Circles[idx].Transform)
-			mesh.DebugCircleBody(&w.DebugLines, w.Circles[idx] , velColor)
+		for idx := range(w.WorldObjects){
+			mesh.DebugAABB(&w.DebugLines, w.WorldObjects[idx].GetAABB(), &aabbDebugColor)
+			mesh.DebugTransform(&w.DebugLines, w.WorldObjects[idx].GetTransform())
+			mesh.DebugBody(&w.DebugLines, w.WorldObjects[idx] , velColor)
 		}
 		w.DebugLines.Draw(renderContext)
 	}

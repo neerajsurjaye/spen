@@ -2,10 +2,14 @@ package mesh
 
 import "github.com/neerajsurjaye/spen/internal/model"
 
-func DebugCircleBody(debugLines *DebugLines, circle *model.Circle, color *model.Color) {
-	body := circle.Body
+func DebugBody(debugLines *DebugLines, object model.WorldObject, color *model.Color) {
+	if object.IsStatic(){
+		return
+	}
 
-	base := circle.Transform.Position
+	body := object.GetBody()
+
+	base := object.GetTransform().Position
 	velocity := body.Velocity
 	
 	if velocity.Magnitude() > 100{

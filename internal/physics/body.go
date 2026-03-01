@@ -12,8 +12,8 @@ type Body struct {
 	Force smath.Vec2
 }
 
-func GetBody(velX float32, velY float32, mass float32) Body{
-	return Body{
+func GetBody(velX float32, velY float32, mass float32) *Body{
+	return &Body{
 		Velocity: smath.Vec2{X: velX, Y: velY},
 		Mass: mass,
 	}

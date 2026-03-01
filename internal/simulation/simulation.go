@@ -8,7 +8,6 @@ import (
 	"github.com/go-gl/glfw/v3.3/glfw"
 	"github.com/neerajsurjaye/spen/internal/force"
 	"github.com/neerajsurjaye/spen/internal/model"
-	"github.com/neerajsurjaye/spen/internal/smath"
 	"github.com/neerajsurjaye/spen/internal/state"
 )
 
@@ -48,13 +47,10 @@ func StartLoop() {
 		accumulator += frameTime	
 
 
-		w.DebugLines.AddArrow(smath.Vec2{150, -10} , smath.Vec2{100, 100}, model.GetColor(1, 0 , 0 , 1))
-
-		// fmt.Println("Render loop at : " , now , accumulator)
 		for accumulator >= FIXED_DT{
 			//Perform physics
-			for idx := range(w.Circles){
-				performPhysics(w.Circles[idx], FIXED_DT)
+			for idx := range(w.WorldObjects){
+				performPhysics(w.WorldObjects[idx], FIXED_DT)
 			}
 			// log.Log("Perfoming Physics at : " , now , accumulator)
 			accumulator -= FIXED_DT
@@ -132,8 +128,12 @@ func Render() {
 
 }
 
-func performPhysics(circle *model.Circle, dt float32){
-	body := circle.GetBody()
+func performPhysics(objects model.WorldObject, dt float32){
+	if objects.IsStatic(){
+		return
+	}
+
+	body := objects.GetBody()
 
 	gravity := force.NewGravity()
 
@@ -141,7 +141,7 @@ func performPhysics(circle *model.Circle, dt float32){
 
 	body.Integrate(dt)
 
-	newPosition := circle.Transform.Position.Add(body.Velocity.Multiply(dt))
-	fmt.Println("Diff Position ", circle.Transform.Position.Subtract(newPosition))
-	circle.SetPosition(&newPosition)
+	newPosition := objects.GetTransform().Position.Add(body.Velocity.Multiply(dt))
+	fmt.Println("Diff Position ", objects.GetTransform().Position.Subtract(newPosition))
+	objects.SetPosition(&newPosition)
 }

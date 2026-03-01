@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"math"
 	"runtime"
 
@@ -35,33 +34,30 @@ func main() {
 	world.DebugLines.Init(utils.CreateProgram("shader/line/line.frag" , "shader/line/line.vert"))
 	world.Grid.Init(100, 500) 
 
+// ====================================================================
 
 	circleBuilder := builder.GetCircleBuilder().Compute()
-	circleMesh := circleBuilder.Build()
-	world.CircleMesh = circleMesh
+	circleMesh := circleBuilder.BuildObject()
 
 	wallBuilder := builder.GetWallBuilder().Compute()
-	wallMesh := wallBuilder.Build()
-	world.WallMesh = wallMesh
+	wallMesh := wallBuilder.BuildObject()
 
 	greatColor := model.Color{R: 1, G: 1, B: 1, A: 1}
 	circle1 := model.GetCircle(0, 0 , 100, 0, greatColor)
 	circle2 := model.GetCircle(500.2, 400 , 230, math.Pi / 2, greatColor)
 	circle3 := model.GetCircle(-250, 400 , 120, math.Pi / 3, greatColor)
 
-	circle1.SetBody(0, 0, 100)
-	circle2.SetBody(0, 0, 500)
-	circle3.SetBody(0, 0, 1000)
+	circle1.SetBody(0, 100, 10)
+	circle2.SetBody(0, 0, 100)
+	circle3.SetBody(0, 0, 100)
 
-	world.AddCircle(circle1)
-	world.AddCircle(circle2)
-	world.AddCircle(circle3)
+	world.AddObject(circle1, circleMesh)
+	world.AddObject(circle2, circleMesh)
+	world.AddObject(circle3, circleMesh)
 
 	groundColor := model.GetColor(0.3, 1, 0.3, 1)
 	ground := model.GetWall(0, -100, 100, 3000, math.Pi / 2, *groundColor)
-	world.AddWall(ground)
-
-	fmt.Println("Initial circle " , circle1.GetBody())
+	world.AddObject(ground, wallMesh)
 
 	simulation.StartLoop()
 	

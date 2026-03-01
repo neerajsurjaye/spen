@@ -9,7 +9,7 @@ type Circle struct {
 	Transform Transform
 	Color     Color
 	AABB      AABB
-	Body      physics.Body
+	Body      *physics.Body
 }
 
 func GetCircle(x float32, y float32, radius float32, rotation float32, col Color) *Circle {
@@ -20,8 +20,16 @@ func GetCircle(x float32, y float32, radius float32, rotation float32, col Color
 	return c
 }
 
+func (c *Circle) GetColor() *Color{
+	return &c.Color
+}
+
 func (c *Circle) SetColor(col Color) {
 	c.Color = col
+}
+
+func (c *Circle) GetTransform() *Transform{
+	return &c.Transform
 }
 
 func (c *Circle) SetTransform(x float32, y float32, radius float32, rot float32) {
@@ -29,7 +37,7 @@ func (c *Circle) SetTransform(x float32, y float32, radius float32, rot float32)
 	c.Transform.Position.X = x
 	c.Transform.Position.Y = y
 	c.Transform.Radians = rot
-	c.Transform.Scale = smath.Vec2{radius, radius}
+	c.Transform.Scale = smath.Vec2{X: radius, Y: radius}
 	c.updateAABB()
 }
 
@@ -38,9 +46,17 @@ func (c *Circle) SetPosition(pos *smath.Vec2){
 	c.updateAABB()
 }
 
-func (c *Circle) DeltaTransform(dx float32, dy float32,  dr float32) {
+func (c *Circle) DeltaTransform(dx , dy, dsX ,dsY, dr float32){
+	c.DeltaCircleTransform(dx, dy, dsX)
+}
+
+func (c *Circle) DeltaCircleTransform(dx float32, dy float32,  dr float32) {
 	c.Transform.DeltaLocation(dx, dy, dr, dr, 0)
 	c.updateAABB()
+}
+
+func (c *Circle) GetAABB() *AABB{
+	return &c.AABB
 }
 
 func (c *Circle) updateAABB() {
@@ -56,5 +72,9 @@ func (c *Circle) SetBody(velX float32, velY float32, mass float32){
 }
 
 func (c *Circle) GetBody() *physics.Body{
-	return &c.Body
+	return c.Body
+}
+
+func (c *Circle) IsStatic() bool{
+	return c.Body == nil
 }

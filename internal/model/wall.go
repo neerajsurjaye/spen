@@ -1,6 +1,7 @@
 package model
 
 import (
+	"github.com/neerajsurjaye/spen/internal/physics"
 	"github.com/neerajsurjaye/spen/internal/smath"
 )
 
@@ -8,6 +9,8 @@ type Wall struct {
 	Color     Color
 	Transform Transform
 	AABB      AABB
+	Body      *physics.Body
+
 }
 
 func GetWall(x float32, y float32, scaleX, scaleY float32, rotation float32, col Color) *Wall {
@@ -18,8 +21,16 @@ func GetWall(x float32, y float32, scaleX, scaleY float32, rotation float32, col
 	return c
 }
 
+func (c *Wall) GetColor() *Color{
+	return &c.Color
+}
+
 func (c *Wall) SetColor(col Color) {
 	c.Color = col
+}
+
+func (c *Wall) GetTransform() *Transform{
+	return &c.Transform
 }
 
 func (c *Wall) SetTransform(x float32, y float32, scaleX float32, scaleY float32, rot float32) {
@@ -27,7 +38,7 @@ func (c *Wall) SetTransform(x float32, y float32, scaleX float32, scaleY float32
 	c.Transform.Position.X = x
 	c.Transform.Position.Y = y
 	c.Transform.Radians = rot
-	c.Transform.Scale = smath.Vec2{scaleX, scaleY}
+	c.Transform.Scale = smath.Vec2{X: scaleX, Y: scaleY}
 	c.updateAABB()
 }
 
@@ -36,7 +47,7 @@ func (c *Wall) SetPosition(pos *smath.Vec2) {
 	c.updateAABB()
 }
 
-func (c *Wall) DeltaTransform(dx float32, dy float32, dsX, dsY, dr float32) {
+func (c *Wall) DeltaTransform(dx, dy, dsX, dsY, dr float32) {
 	c.Transform.DeltaLocation(dx, dy, dsX, dsY, dr)
 	c.updateAABB()
 }
@@ -46,4 +57,21 @@ func (c *Wall) updateAABB() {
 	c.AABB.MaxX = c.Transform.Position.X + c.Transform.Scale.X
 	c.AABB.MinY = c.Transform.Position.Y - c.Transform.Scale.Y
 	c.AABB.MaxY = c.Transform.Position.Y + c.Transform.Scale.Y
+}
+
+
+func (c *Wall) GetAABB() *AABB{
+	return &c.AABB
+}
+
+func (c *Wall) GetBody() *physics.Body{
+	return c.Body
+}
+
+func (c *Wall) SetBody(velX float32, velY float32, mass float32){
+	c.Body = physics.GetBody(velX, velY, mass)
+}
+
+func (c *Wall) IsStatic() bool{
+	return c.Body == nil
 }
