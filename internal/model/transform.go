@@ -8,24 +8,25 @@ import (
 type Transform struct {
 	Position smath.Vec2
 
-	Scale float32
+	Scale smath.Vec2
 
 	//radians
 	Radians float32
 }
 
-func GetTransform(x float32, y float32, scale float32, radians float32) Transform{
+func GetTransform(x float32, y float32, scalex float32, scaley float32, radians float32) Transform{
 	return Transform{
 		Position: smath.Vec2{X: x, Y : y},
-		Scale: scale,
+		Scale: smath.Vec2{X: scalex, Y : scaley},
 		Radians: radians,
 	}
 }
 
-func (t *Transform) DeltaLocation(dx float32, dy float32, ds float32, dr float32) {
+func (t *Transform) DeltaLocation(dx float32, dy float32, dsx float32, dsy float32, dr float32) {
 	t.Position.X = t.Position.X + dx
 	t.Position.Y = t.Position.Y + dy
-	t.Scale = t.Scale + ds
+	t.Scale.X = t.Scale.X + dsx
+	t.Scale.Y = t.Scale.Y + dsy
 	t.Radians = t.Radians + dr
 }
 
@@ -38,7 +39,7 @@ func (t *Transform) getTranslation() mgl32.Mat4 {
 }
 
 func (t *Transform) getScale() mgl32.Mat4 {
-	return mgl32.Scale3D(float32(t.Scale), float32(t.Scale), 1)
+	return mgl32.Scale3D(float32(t.Scale.X), float32(t.Scale.Y), 1)
 }
 
 func (t *Transform) getRotation() mgl32.Mat4 {

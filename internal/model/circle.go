@@ -25,11 +25,11 @@ func (c *Circle) SetColor(col Color) {
 }
 
 func (c *Circle) SetTransform(x float32, y float32, radius float32, rot float32) {
-	c.Transform = GetTransform(x, y, radius, rot)
+	c.Transform = GetTransform(x, y, radius,radius, rot)
 	c.Transform.Position.X = x
 	c.Transform.Position.Y = y
 	c.Transform.Radians = rot
-	c.Transform.Scale = radius
+	c.Transform.Scale = smath.Vec2{radius, radius}
 	c.updateAABB()
 }
 
@@ -38,16 +38,16 @@ func (c *Circle) SetPosition(pos *smath.Vec2){
 	c.updateAABB()
 }
 
-func (c *Circle) DeltaTransform(dx float32, dy float32, dr float32) {
-	c.Transform.DeltaLocation(dx, dy, dr, 0)
+func (c *Circle) DeltaTransform(dx float32, dy float32,  dr float32) {
+	c.Transform.DeltaLocation(dx, dy, dr, dr, 0)
 	c.updateAABB()
 }
 
 func (c *Circle) updateAABB() {
-	c.AABB.MinX = c.Transform.Position.X - c.Transform.Scale
-	c.AABB.MaxX = c.Transform.Position.X + c.Transform.Scale
-	c.AABB.MinY = c.Transform.Position.Y - c.Transform.Scale
-	c.AABB.MaxY = c.Transform.Position.Y + c.Transform.Scale
+	c.AABB.MinX = c.Transform.Position.X - c.Transform.Scale.X
+	c.AABB.MaxX = c.Transform.Position.X + c.Transform.Scale.X
+	c.AABB.MinY = c.Transform.Position.Y - c.Transform.Scale.Y
+	c.AABB.MaxY = c.Transform.Position.Y + c.Transform.Scale.Y
 }
 
 

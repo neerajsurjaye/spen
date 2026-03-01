@@ -17,4 +17,3 @@ func EpsilonEqualF32(a float32, b float32) bool {
 func LERP(a float64, b float64, t float64) float64{
 	return a + (t * (b - a))
 }
-

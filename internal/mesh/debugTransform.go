@@ -33,8 +33,8 @@ func transformPoint(x float32 , y float32, t *model.Transform) (float32, float32
 	rx := x * cos - y * sin
 	ry := x * sin + y * cos
 
-	rx *= t.Scale
-	ry *= t.Scale
+	rx *= t.Scale.X
+	ry *= t.Scale.Y
 
 	rx += t.Position.X
 	ry += t.Position.Y

@@ -4,6 +4,7 @@ import (
 	"github.com/go-gl/gl/all-core/gl"
 	"github.com/neerajsurjaye/spen/internal/model"
 	"github.com/neerajsurjaye/spen/internal/renderer"
+	"github.com/neerajsurjaye/spen/internal/smath"
 )
 
 type DebugLines struct {
@@ -42,7 +43,6 @@ func (d *DebugLines) AddLine(
 ){
 	d.vertices = append(d.vertices, x1, y1, color.R,color.G, color.B, color.A)
 	d.vertices = append(d.vertices, x2, y2, color.R,color.G, color.B, color.A)
-
 }
 
 func (d *DebugLines) Draw(rc *renderer.RenderContext){
@@ -74,4 +74,39 @@ func (d *DebugLines) Draw(rc *renderer.RenderContext){
 
 	//Lines will be added every frame
 	d.vertices = d.vertices[:0]
+}
+
+func (d *DebugLines) AddLineVec2(
+	start smath.Vec2,
+	end smath.Vec2,
+	color *model.Color,
+){
+	d.AddLine(start.X, start.Y, end.X, end.Y, color)
+}
+
+func (d *DebugLines) AddArrow(
+	start smath.Vec2,
+	end smath.Vec2,
+	color *model.Color,
+){
+	direction := end.Subtract(start)
+
+	if direction.Magnitude() < smath.EpsilonF32{
+		return
+	}
+
+	arrowLength := float32(10)
+	arrowWidth := float32(5)
+
+	direction = direction.Normalize();
+	perpendicular := smath.NewVec2(-direction.Y, direction.X)
+	
+	base := end.Subtract(direction.Multiply(arrowLength))
+
+	left := base.Add(perpendicular.Multiply(arrowWidth))
+	right := base.Subtract(perpendicular.Multiply(arrowWidth))
+
+	d.AddLineVec2(start, end, color)
+	d.AddLineVec2(end, left, color)
+	d.AddLineVec2(end, right, color)
 }

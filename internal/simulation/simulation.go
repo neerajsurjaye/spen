@@ -8,6 +8,7 @@ import (
 	"github.com/go-gl/glfw/v3.3/glfw"
 	"github.com/neerajsurjaye/spen/internal/force"
 	"github.com/neerajsurjaye/spen/internal/model"
+	"github.com/neerajsurjaye/spen/internal/smath"
 	"github.com/neerajsurjaye/spen/internal/state"
 )
 
@@ -46,6 +47,8 @@ func StartLoop() {
 
 		accumulator += frameTime	
 
+
+		w.DebugLines.AddArrow(smath.Vec2{150, -10} , smath.Vec2{100, 100}, model.GetColor(1, 0 , 0 , 1))
 
 		// fmt.Println("Render loop at : " , now , accumulator)
 		for accumulator >= FIXED_DT{

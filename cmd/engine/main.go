@@ -37,14 +37,14 @@ func main() {
 
 
 	circleBuilder := builder.GetCircleBuilder().Compute()
-
 	circleMesh := circleBuilder.Build()
-
-	fmt.Println(circleMesh)
-
 	world.CircleMesh = circleMesh
 
-	greatColor := model.Color{R: 0.5, G: .5, B: .2, A: 1}
+	wallBuilder := builder.GetWallBuilder().Compute()
+	wallMesh := wallBuilder.Build()
+	world.WallMesh = wallMesh
+
+	greatColor := model.Color{R: 1, G: 1, B: 1, A: 1}
 	circle1 := model.GetCircle(0, 0 , 100, 0, greatColor)
 	circle2 := model.GetCircle(500.2, 400 , 230, math.Pi / 2, greatColor)
 	circle3 := model.GetCircle(-250, 400 , 120, math.Pi / 3, greatColor)
@@ -56,6 +56,10 @@ func main() {
 	world.AddCircle(circle1)
 	world.AddCircle(circle2)
 	world.AddCircle(circle3)
+
+	groundColor := model.GetColor(0.3, 1, 0.3, 1)
+	ground := model.GetWall(0, -100, 100, 3000, math.Pi / 2, *groundColor)
+	world.AddWall(ground)
 
 	fmt.Println("Initial circle " , circle1.GetBody())
 

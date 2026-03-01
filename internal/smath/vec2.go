@@ -9,6 +9,10 @@ type Vec2 struct {
 	Y float32
 }
 
+func NewVec2(x float32, y float32) Vec2{
+	return Vec2{X : x, Y : y}
+}
+
 func (a Vec2) Add(b Vec2) Vec2 {
 
 	var result Vec2 = Vec2{a.X + b.X, a.Y + b.Y}
