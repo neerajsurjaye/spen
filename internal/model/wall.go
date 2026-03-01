@@ -1,6 +1,8 @@
 package model
 
 import (
+	"math"
+
 	"github.com/neerajsurjaye/spen/internal/physics"
 	"github.com/neerajsurjaye/spen/internal/smath"
 )
@@ -57,6 +59,24 @@ func (c *Wall) updateAABB() {
 	c.AABB.MaxX = c.Transform.Position.X + c.Transform.Scale.X
 	c.AABB.MinY = c.Transform.Position.Y - c.Transform.Scale.Y
 	c.AABB.MaxY = c.Transform.Position.Y + c.Transform.Scale.Y
+
+	//Half width and half height
+	hx := c.Transform.Scale.X
+	hy := c.Transform.Scale.Y
+
+	px := c.Transform.Position.X
+	py := c.Transform.Position.Y
+
+	cos := float32(math.Abs(math.Cos(float64(c.Transform.Radians))))
+	sin := float32(math.Abs(math.Sin(float64(c.Transform.Radians))))
+
+	newHx := cos * hx + sin * hy
+	newHy := sin * hx + cos * hy
+
+	c.AABB.MinX = px - newHx
+	c.AABB.MaxX = px + newHx
+	c.AABB.MinY = py - newHy
+	c.AABB.MaxY = py + newHy
 }
 
 
