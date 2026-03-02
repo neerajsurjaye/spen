@@ -23,6 +23,10 @@ func (b *Body) AddForce(force smath.Vec2){
 	b.Force.AddSelf(force)
 }
 
+func (b *Body) SetVelocity(vel smath.Vec2){
+	b.Velocity = vel
+}
+
 func (b *Body) Integrate(dt float32){
 	acceleration := b.Force.Multiply(1.0 / b.Mass)
 

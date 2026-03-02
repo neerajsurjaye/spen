@@ -56,11 +56,11 @@ func main() {
 	world.AddObject(circle3, circleMesh)
 
 	groundColor := model.GetColor(0.3, 1, 0.3, 1)
-	ground := model.GetWall(0, -100, 100, 30, math.Pi / 2, *groundColor)
+	ground := model.GetWall(0, -200, 500, 20, 0, *groundColor)
 	world.AddObject(ground, wallMesh)
 
-	movingSquare := model.GetWall(30, -30, 40, 40, math.Pi / 3, *groundColor)
-	movingSquare.SetBody(10, 50, 100)
+	movingSquare := model.GetWall(300, -100, 20, 40, math.Pi / 3, *groundColor)
+	movingSquare.SetBody(0, 0, 100)
 	world.AddObject(movingSquare, wallMesh)
 
 	simulation.StartLoop()

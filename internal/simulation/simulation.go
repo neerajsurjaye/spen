@@ -8,6 +8,7 @@ import (
 	"github.com/go-gl/glfw/v3.3/glfw"
 	"github.com/neerajsurjaye/spen/internal/force"
 	"github.com/neerajsurjaye/spen/internal/model"
+	"github.com/neerajsurjaye/spen/internal/smath"
 	"github.com/neerajsurjaye/spen/internal/state"
 )
 
@@ -51,6 +52,10 @@ func StartLoop() {
 			//Perform physics
 			for idx := range(w.WorldObjects){
 				performPhysics(w.WorldObjects[idx], FIXED_DT)
+			}
+
+			for idx := range(w.WorldObjects){
+				checkCollision(w.WorldObjects[idx], w.WorldObjects)
 			}
 			// log.Log("Perfoming Physics at : " , now , accumulator)
 			accumulator -= FIXED_DT
@@ -144,4 +149,13 @@ func performPhysics(objects model.WorldObject, dt float32){
 	newPosition := objects.GetTransform().Position.Add(body.Velocity.Multiply(dt))
 	fmt.Println("Diff Position ", objects.GetTransform().Position.Subtract(newPosition))
 	objects.SetPosition(&newPosition)
+}
+
+func checkCollision(object model.WorldObject, worldObjects []model.WorldObject){
+
+	for i := range(worldObjects){
+		if(object != worldObjects[i] && object.GetAABB().IsColliding(worldObjects[i].GetAABB()) && !object.IsStatic()){
+			object.GetBody().SetVelocity(smath.Vec2{X : 0, Y: 0})
+		}	
+	}
 }
