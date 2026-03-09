@@ -3,7 +3,7 @@ package model
 import (
 	"math"
 
-	"github.com/neerajsurjaye/spen/internal/physics"
+	"github.com/neerajsurjaye/spen/internal/enums"
 	"github.com/neerajsurjaye/spen/internal/smath"
 )
 
@@ -11,7 +11,7 @@ type Wall struct {
 	Color     Color
 	Transform Transform
 	AABB      AABB
-	Body      *physics.Body
+	Body      *Body
 
 }
 
@@ -84,14 +84,18 @@ func (c *Wall) GetAABB() *AABB{
 	return &c.AABB
 }
 
-func (c *Wall) GetBody() *physics.Body{
+func (c *Wall) GetBody() *Body{
 	return c.Body
 }
 
 func (c *Wall) SetBody(velX float32, velY float32, mass float32){
-	c.Body = physics.GetBody(velX, velY, mass)
+	c.Body = GetBody(velX, velY, mass)
 }
 
 func (c *Wall) IsStatic() bool{
 	return c.Body == nil
+}
+
+func (c *Wall) Type() enums.ColliderType{
+	return enums.ColliderWall
 }

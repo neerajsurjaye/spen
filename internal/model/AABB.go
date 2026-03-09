@@ -1,5 +1,7 @@
 package model
 
+import "github.com/neerajsurjaye/spen/internal/enums"
+
 type AABB struct {
 	MinX float32
 	MaxX float32
@@ -15,4 +17,8 @@ func (curr *AABB) IsColliding(collider *AABB) bool {
 		curr.MinX <= collider.MaxX &&
 		curr.MaxY >= collider.MinY &&
 		curr.MinY <= collider.MaxY
+}
+
+func (c *AABB) Type() enums.ColliderType {
+	return enums.ColliderCircle
 }

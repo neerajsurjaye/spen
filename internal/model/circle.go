@@ -1,7 +1,7 @@
 package model
 
 import (
-	"github.com/neerajsurjaye/spen/internal/physics"
+	"github.com/neerajsurjaye/spen/internal/enums"
 	"github.com/neerajsurjaye/spen/internal/smath"
 )
 
@@ -9,7 +9,7 @@ type Circle struct {
 	Transform Transform
 	Color     Color
 	AABB      AABB
-	Body      *physics.Body
+	Body      *Body
 }
 
 func GetCircle(x float32, y float32, radius float32, rotation float32, col Color) *Circle {
@@ -68,13 +68,17 @@ func (c *Circle) updateAABB() {
 
 
 func (c *Circle) SetBody(velX float32, velY float32, mass float32){
-	c.Body = physics.GetBody(velX, velY, mass)
+	c.Body = GetBody(velX, velY, mass)
 }
 
-func (c *Circle) GetBody() *physics.Body{
+func (c *Circle) GetBody() *Body{
 	return c.Body
 }
 
 func (c *Circle) IsStatic() bool{
 	return c.Body == nil
+}
+
+func (c *Circle) Type() enums.ColliderType{
+	return enums.ColliderCircle
 }

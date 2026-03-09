@@ -55,14 +55,8 @@ func StartLoop() {
 
 			for accumulator >= FIXED_DT{
 				resetCollisoin(w.WorldObjects)
-
-				for idx := range(w.WorldObjects){
-					performPhysics(w.WorldObjects[idx], FIXED_DT)
-				}
-
-				for idx := range(w.WorldObjects){
-					checkCollision(w.WorldObjects[idx], w.WorldObjects)
-				}
+				performPhysics(w.WorldObjects, FIXED_DT)
+				checkCollision(w.WorldObjects)
 				accumulator -= FIXED_DT
 			}
 
@@ -149,36 +143,45 @@ func Render() {
 
 }
 
-func performPhysics(object model.WorldObject, dt float32){
-	if object.IsStatic(){
-		return
-	}
-
-	body := object.GetBody()
-
-	gravity := force.NewGravity()
-
-	body.AddForce(gravity.GetForce(body.Mass))
-
-	body.IntegrateVelocity(dt)
-
-	//Integrate Position
-	newPosition := object.GetTransform().Position.Add(body.Velocity.Multiply(dt))
-	object.SetPosition(&newPosition)
-}
-
-func checkCollision(object model.WorldObject, worldObjects []model.WorldObject){
+func performPhysics(worldObjects []model.WorldObject, dt float32){
 
 	for i := range(worldObjects){
-		if(object != worldObjects[i] && object.GetAABB().IsColliding(worldObjects[i].GetAABB())){
+		object := worldObjects[i]
 
-			object.GetAABB().Colliding = true
-			worldObjects[i].GetAABB().Colliding = true
+		if object.IsStatic(){
+			return
+		}
 
-			if !object.IsStatic(){
-				object.GetBody().SetVelocity(smath.Vec2{X : 0, Y: 0})
-			}
-		}	
+		body := object.GetBody()
+		gravity := force.NewGravity()
+
+		body.AddForce(gravity.GetForce(body.Mass))
+		body.IntegrateVelocity(dt)
+
+		//Integrate Position
+		newPosition := object.GetTransform().Position.Add(body.Velocity.Multiply(dt))
+		object.SetPosition(&newPosition)
+	}
+}
+
+func checkCollision(worldObjects []model.WorldObject){
+
+	for i := 0 ; i < len(worldObjects); i++{
+		for j := i + 1; j < len(worldObjects); j++{
+
+			if worldObjects[i].GetAABB().IsColliding(worldObjects[j].GetAABB()){
+
+				worldObjects[i].GetAABB().Colliding = true
+				worldObjects[j].GetAABB().Colliding = true
+
+				if !worldObjects[i].IsStatic(){
+					worldObjects[i].GetBody().SetVelocity(smath.Vec2{X : 0, Y: 0})
+				}
+				if !worldObjects[j].IsStatic(){
+					worldObjects[j].GetBody().SetVelocity(smath.Vec2{X : 0, Y: 0})
+				}
+			}	
+		}
 	}
 }
 

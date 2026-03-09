@@ -1,4 +1,4 @@
-package physics
+package model
 
 import (
 	"fmt"
@@ -15,7 +15,7 @@ type Body struct {
 func GetBody(velX float32, velY float32, mass float32) *Body{
 	return &Body{
 		Velocity: smath.Vec2{X: velX, Y: velY},
-		Mass: mass,
+		Mass: mass,	
 	}
 }
 

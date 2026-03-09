@@ -1,7 +1,7 @@
 package model
 
 import (
-	"github.com/neerajsurjaye/spen/internal/physics"
+	"github.com/neerajsurjaye/spen/internal/enums"
 	"github.com/neerajsurjaye/spen/internal/smath"
 )
 
@@ -16,7 +16,9 @@ type WorldObject interface {
 
 	GetAABB() *AABB
 
-	GetBody() *physics.Body
+	GetBody() *Body
 
-	IsStatic() bool
+	IsStatic() bool	
+
+	Type() enums.ColliderType
 }
