@@ -20,6 +20,8 @@ func main() {
 
 	state.InitEngine()
 	state.InitWorld()
+	state.InitInputState()
+	
 	engine := state.EngineInstance()
 	world := state.WorldInstance()
 

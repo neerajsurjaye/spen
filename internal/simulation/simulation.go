@@ -45,25 +45,31 @@ func StartLoop() {
 			frameTime = MAX_FRAME_TIME
 		}
 
-		accumulator += frameTime	
 
-
-		for accumulator >= FIXED_DT{
-			//Perform physics
-			for idx := range(w.WorldObjects){
-				performPhysics(w.WorldObjects[idx], FIXED_DT)
+		if !engine.IsPaused || engine.StepSim{ 
+			accumulator += frameTime
+			
+			if(engine.StepSim){
+				accumulator = FIXED_DT
 			}
 
-			for idx := range(w.WorldObjects){
-				checkCollision(w.WorldObjects[idx], w.WorldObjects)
+			for accumulator >= FIXED_DT{
+				//Perform physics
+				for idx := range(w.WorldObjects){
+					performPhysics(w.WorldObjects[idx], FIXED_DT)
+				}
+
+				for idx := range(w.WorldObjects){
+					checkCollision(w.WorldObjects[idx], w.WorldObjects)
+				}
+				// log.Log("Perfoming Physics at : " , now , accumulator)
+				accumulator -= FIXED_DT
 			}
-			// log.Log("Perfoming Physics at : " , now , accumulator)
-			accumulator -= FIXED_DT
+
+			engine.StepSim = false
 		}
 		
 		running = draw()
-
-		time.Sleep(time.Millisecond)
 
 		if(TARGET_FPS > 0){
 			frameDuration := time.Since(frameStart)
@@ -83,6 +89,7 @@ func StartLoop() {
 func draw() bool{
 
 	world := state.WorldInstance()
+	engine := state.EngineInstance()
 	window := state.EngineInstance().GlfwState.Window
 
 	window.SwapBuffers()
@@ -110,12 +117,22 @@ func draw() bool{
 		world.Camera.Y = 0
 	}
 
-	if window.GetKey(glfw.KeyI) == glfw.Press{
+	if IsKeyPressed(window, glfw.KeyI){
 		world.DebugDraw = !world.DebugDraw
 	}
 
-	if window.GetKey(glfw.KeyEscape) == glfw.Press{
+	if IsKeyPressed(window, glfw.KeyEscape){
 		return false
+	}
+
+	if IsKeyPressed(window, glfw.KeyP){
+		engine.IsPaused = !engine.IsPaused
+	}
+
+	if IsKeyPressed(window, glfw.KeyL){
+		if engine.IsPaused{
+			engine.StepSim = true
+		}
 	}
 
 	Render()
@@ -158,4 +175,15 @@ func checkCollision(object model.WorldObject, worldObjects []model.WorldObject){
 			object.GetBody().SetVelocity(smath.Vec2{X : 0, Y: 0})
 		}	
 	}
+}
+
+func IsKeyPressed(window *glfw.Window, key glfw.Key) bool{
+	inputState := state.InputStateInstance()
+
+	currentAction := window.GetKey(key)
+	prevAction := inputState.PrevAction[key]
+
+	inputState.PrevAction[key] = currentAction
+
+	return currentAction == glfw.Press && prevAction == glfw.Release
 }
