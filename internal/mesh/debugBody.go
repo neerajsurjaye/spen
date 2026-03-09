@@ -1,23 +1,29 @@
 package mesh
 
-import "github.com/neerajsurjaye/spen/internal/model"
+import (
+	"math"
+
+	"github.com/neerajsurjaye/spen/internal/model"
+)
 
 func DebugBody(debugLines *DebugLines, object model.WorldObject, color *model.Color) {
 	if object.IsStatic(){
 		return
 	}
 
-	body := object.GetBody()
+	var mArrowLen float32 = 100
+	velocity := object.GetBody().Velocity
+
+	mag := float64(velocity.Magnitude())
+	scaledMag := float32(math.Log(mag + 1)) * 10
+
+	if scaledMag > mArrowLen{
+		scaledMag = mArrowLen
+	}
+	scaledVelocity := velocity.Normalize().Multiply(scaledMag)
 
 	base := object.GetTransform().Position
-	velocity := body.Velocity
-	
-	if velocity.Magnitude() > 100{
-		velocity = velocity.Normalize()
-		velocity = velocity.Multiply(100)
-	}
-
-	end := base.Add(velocity)
+	end := base.Add(scaledVelocity)
 
 	debugLines.AddArrow(base , end, color)
 }

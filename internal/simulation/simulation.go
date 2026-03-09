@@ -1,7 +1,6 @@
 package simulation
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/go-gl/gl/all-core/gl"
@@ -10,6 +9,7 @@ import (
 	"github.com/neerajsurjaye/spen/internal/model"
 	"github.com/neerajsurjaye/spen/internal/smath"
 	"github.com/neerajsurjaye/spen/internal/state"
+	"github.com/neerajsurjaye/spen/internal/utils"
 )
 
 func StartLoop() {
@@ -54,7 +54,8 @@ func StartLoop() {
 			}
 
 			for accumulator >= FIXED_DT{
-				//Perform physics
+				resetCollisoin(w.WorldObjects)
+
 				for idx := range(w.WorldObjects){
 					performPhysics(w.WorldObjects[idx], FIXED_DT)
 				}
@@ -62,7 +63,6 @@ func StartLoop() {
 				for idx := range(w.WorldObjects){
 					checkCollision(w.WorldObjects[idx], w.WorldObjects)
 				}
-				// log.Log("Perfoming Physics at : " , now , accumulator)
 				accumulator -= FIXED_DT
 			}
 
@@ -117,19 +117,19 @@ func draw() bool{
 		world.Camera.Y = 0
 	}
 
-	if IsKeyPressed(window, glfw.KeyI){
+	if utils.IsKeyPressed(window, glfw.KeyI){
 		world.DebugDraw = !world.DebugDraw
 	}
 
-	if IsKeyPressed(window, glfw.KeyEscape){
+	if utils.IsKeyPressed(window, glfw.KeyEscape){
 		return false
 	}
 
-	if IsKeyPressed(window, glfw.KeyP){
+	if utils.IsKeyPressed(window, glfw.KeyP){
 		engine.IsPaused = !engine.IsPaused
 	}
 
-	if IsKeyPressed(window, glfw.KeyL){
+	if utils.IsKeyPressed(window, glfw.KeyL){
 		if engine.IsPaused{
 			engine.StepSim = true
 		}
@@ -144,46 +144,47 @@ func draw() bool{
 func Render() {
 
 	gl.Clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
-	// engine := state.EngineInstance()
 	world := state.WorldInstance()
 	world.Draw()
 
 }
 
-func performPhysics(objects model.WorldObject, dt float32){
-	if objects.IsStatic(){
+func performPhysics(object model.WorldObject, dt float32){
+	if object.IsStatic(){
 		return
 	}
 
-	body := objects.GetBody()
+	body := object.GetBody()
 
 	gravity := force.NewGravity()
 
 	body.AddForce(gravity.GetForce(body.Mass))
 
-	body.Integrate(dt)
+	body.IntegrateVelocity(dt)
 
-	newPosition := objects.GetTransform().Position.Add(body.Velocity.Multiply(dt))
-	fmt.Println("Diff Position ", objects.GetTransform().Position.Subtract(newPosition))
-	objects.SetPosition(&newPosition)
+	//Integrate Position
+	newPosition := object.GetTransform().Position.Add(body.Velocity.Multiply(dt))
+	object.SetPosition(&newPosition)
 }
 
 func checkCollision(object model.WorldObject, worldObjects []model.WorldObject){
 
 	for i := range(worldObjects){
-		if(object != worldObjects[i] && object.GetAABB().IsColliding(worldObjects[i].GetAABB()) && !object.IsStatic()){
-			object.GetBody().SetVelocity(smath.Vec2{X : 0, Y: 0})
+		if(object != worldObjects[i] && object.GetAABB().IsColliding(worldObjects[i].GetAABB())){
+
+			object.GetAABB().Colliding = true
+			worldObjects[i].GetAABB().Colliding = true
+
+			if !object.IsStatic(){
+				object.GetBody().SetVelocity(smath.Vec2{X : 0, Y: 0})
+			}
 		}	
 	}
 }
 
-func IsKeyPressed(window *glfw.Window, key glfw.Key) bool{
-	inputState := state.InputStateInstance()
-
-	currentAction := window.GetKey(key)
-	prevAction := inputState.PrevAction[key]
-
-	inputState.PrevAction[key] = currentAction
-
-	return currentAction == glfw.Press && prevAction == glfw.Release
+func resetCollisoin(worldObjects []model.WorldObject){
+	for i := range(worldObjects){
+		worldObjects[i].GetAABB().Colliding = false
+	}
 }
+

@@ -45,3 +45,8 @@ func (t *Transform) getScale() mgl32.Mat4 {
 func (t *Transform) getRotation() mgl32.Mat4 {
 	return mgl32.HomogRotate3DZ(t.Radians)
 }
+
+func (t *Transform) IntegratePosition(velocity smath.Vec2, dt float32) {
+	newPosition := t.Position.Add(velocity.Multiply(dt))
+	t.Position = newPosition
+}
