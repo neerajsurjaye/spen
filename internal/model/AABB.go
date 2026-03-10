@@ -19,6 +19,6 @@ func (curr *AABB) IsColliding(collider *AABB) bool {
 		curr.MinY <= collider.MaxY
 }
 
-func (c *AABB) Type() enums.ColliderType {
+func (c *AABB) GetColliderType() enums.ColliderType {
 	return enums.ColliderCircle
 }

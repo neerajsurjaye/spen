@@ -20,5 +20,5 @@ type WorldObject interface {
 
 	IsStatic() bool	
 
-	Type() enums.ColliderType
+	GetColliderType() enums.ColliderType
 }

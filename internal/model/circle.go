@@ -79,6 +79,10 @@ func (c *Circle) IsStatic() bool{
 	return c.Body == nil
 }
 
-func (c *Circle) Type() enums.ColliderType{
+func (c *Circle) GetColliderType() enums.ColliderType{
 	return enums.ColliderCircle
+}
+
+func (c *Circle) GetRadius() float32{
+	return c.Transform.Scale.X
 }

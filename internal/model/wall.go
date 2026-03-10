@@ -96,6 +96,6 @@ func (c *Wall) IsStatic() bool{
 	return c.Body == nil
 }
 
-func (c *Wall) Type() enums.ColliderType{
+func (c *Wall) GetColliderType() enums.ColliderType{
 	return enums.ColliderWall
 }
