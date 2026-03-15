@@ -85,11 +85,14 @@ func (c *Wall) GetAABB() *AABB{
 }
 
 func (c *Wall) GetBody() *Body{
-	return c.Body
+	if c.Body != nil{
+		return c.Body
+	}
+	return nil
 }
 
-func (c *Wall) SetBody(velX float32, velY float32, mass float32){
-	c.Body = GetBody(velX, velY, mass)
+func (c *Wall) SetBody(velX float32, velY float32, mass float32, restituion float32){
+	c.Body = GetBody(velX, velY, mass, restituion)
 }
 
 func (c *Wall) IsStatic() bool{

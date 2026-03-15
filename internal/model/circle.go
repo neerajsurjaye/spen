@@ -67,12 +67,15 @@ func (c *Circle) updateAABB() {
 }
 
 
-func (c *Circle) SetBody(velX float32, velY float32, mass float32){
-	c.Body = GetBody(velX, velY, mass)
+func (c *Circle) SetBody(velX , velY, mass, restitution float32){
+	c.Body = GetBody(velX, velY, mass, restitution)
 }
 
 func (c *Circle) GetBody() *Body{
-	return c.Body
+	if c.Body != nil{
+		return c.Body
+	}
+	return nil
 }
 
 func (c *Circle) IsStatic() bool{

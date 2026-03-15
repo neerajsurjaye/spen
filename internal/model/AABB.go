@@ -20,5 +20,5 @@ func (curr *AABB) IsColliding(collider *AABB) bool {
 }
 
 func (c *AABB) GetColliderType() enums.ColliderType {
-	return enums.ColliderCircle
+	return enums.ColliderAABB
 }

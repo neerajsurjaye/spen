@@ -7,6 +7,7 @@ import (
 	"github.com/go-gl/glfw/v3.3/glfw"
 	"github.com/neerajsurjaye/spen/internal/force"
 	"github.com/neerajsurjaye/spen/internal/model"
+	"github.com/neerajsurjaye/spen/internal/physics"
 	"github.com/neerajsurjaye/spen/internal/smath"
 	"github.com/neerajsurjaye/spen/internal/state"
 	"github.com/neerajsurjaye/spen/internal/utils"
@@ -56,7 +57,10 @@ func StartLoop() {
 			for accumulator >= FIXED_DT{
 				resetCollisoin(w.WorldObjects)
 				performPhysics(w.WorldObjects, FIXED_DT)
-				checkCollision(w.WorldObjects)
+				// checkCollision(w.WorldObjects)
+				manifolds := detectCollision(w.WorldObjects)
+				resolveCollision(manifolds)
+
 				accumulator -= FIXED_DT
 			}
 
@@ -149,7 +153,7 @@ func performPhysics(worldObjects []model.WorldObject, dt float32){
 		object := worldObjects[i]
 
 		if object.IsStatic(){
-			return
+			continue
 		}
 
 		body := object.GetBody()
@@ -164,6 +168,7 @@ func performPhysics(worldObjects []model.WorldObject, dt float32){
 	}
 }
 
+/*Depriciated*/
 func checkCollision(worldObjects []model.WorldObject){
 
 	for i := 0 ; i < len(worldObjects); i++{
@@ -182,6 +187,35 @@ func checkCollision(worldObjects []model.WorldObject){
 				}
 			}	
 		}
+	}
+}
+
+func detectCollision(worldObjects []model.WorldObject) []*physics.CollisionManifold{
+	
+	var manifolds []*physics.CollisionManifold
+
+	for i := 0 ; i < len(worldObjects); i++{
+		for j := i + 1 ; j < len(worldObjects); j++{
+			if worldObjects[i].GetAABB().IsColliding(worldObjects[j].GetAABB()){
+				m := physics.CheckCollision(worldObjects[i], worldObjects[j])
+
+				if m != nil{
+					manifolds = append(manifolds, m)
+				}
+			}
+		}
+	}
+
+	return manifolds
+}
+
+func resolveCollision(manifolds []*physics.CollisionManifold){
+	for _, m := range(manifolds){
+		physics.ResolveImpulse(m.BodyA, m.BodyB, *m)
+	}
+
+	for _, m := range(manifolds){
+		physics.PositionCorrection(m.BodyA, m.BodyB, *m)
 	}
 }
 

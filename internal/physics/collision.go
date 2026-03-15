@@ -33,6 +33,7 @@ func InitCollisionTable(){
 }
 
 func circleVsCircle(a, b model.WorldObject) *CollisionManifold{
+	fmt.Println("==Circles Colliding====")
 	circleA, okA := a.(*model.Circle)
 	circleB, okB := b.(*model.Circle)
 
@@ -71,7 +72,7 @@ func circleVsCircle(a, b model.WorldObject) *CollisionManifold{
 }
 
 func circleVsWall(a, b model.WorldObject) *CollisionManifold{
-
+	fmt.Println("==Circles and Walls Colliding====")
 	typeA := a.GetColliderType()
 	typeB := b.GetColliderType()
 
@@ -110,12 +111,53 @@ func circleVsWall(a, b model.WorldObject) *CollisionManifold{
 	localX := local.X*cos - local.Y * sin
 	localY := local.X*sin + local.Y * cos 
 
-	localPoint := smath.NewVec2(localX, localY)
+	// localPoint := smath.NewVec2(localX, localY)
+	closestX := smath.ClampF32(localX, -hx, hx)
+	closestY := smath.ClampF32(localY, -hy, hy)
 
-	fmt.Println(localPoint)
-	// closestX := 
+	diffX := localX - closestX
+	diffY := localY - closestY
 
-	return nil
+	dist2 := diffX * diffX + diffY * diffY
+	radius := circle.GetRadius()
+
+	if dist2 > radius * radius{
+		return nil
+	}
+
+	dist := float32(math.Sqrt(float64(dist2)))
+
+	var normal smath.Vec2
+	var penetration float32
+
+	if dist != 0 {
+		normal = smath.NewVec2(diffX/ dist, diffY/ dist)
+		penetration = radius - dist
+	}else{
+		normal = smath.NewVec2(1, 0)
+		penetration = radius
+	}
+
+	cos  = float32(math.Cos(float64(rot)))
+	sin  = float32(math.Sin(float64(rot)))
+
+	worldNX := normal.X * cos - normal.Y * sin
+	worldNY := normal.X * sin + normal.Y * cos
+
+	contactX := closestX * cos - closestY * sin
+	contactY := closestX * sin + closestY * cos
+
+	contact := smath.NewVec2(contactX, contactY).Add(rectPos)
+
+	worldNormal := smath.NewVec2(worldNX, worldNY)
+	
+	return &CollisionManifold{
+		BodyA: circle,
+		BodyB: wall,
+		Normal: worldNormal,
+		Penetration: penetration,
+		Contact: contact,
+	}
 
 }
 
@@ -128,7 +170,6 @@ func CheckCollision(a, b model.WorldObject) *CollisionManifold{
 
 	colA := a.GetColliderType()
 	colB := b.GetColliderType()
-
 
 	if fn := collisionTable[colA][colB]; fn != nil{
 		return fn(a, b)
@@ -185,4 +226,98 @@ func CheckAABBColl(a, b model.WorldObject) *CollisionManifold{
 
 	return manifold
 
+}
+
+/*
+	Position correction is required. As impulse changes velocity but doesn't correct overlap.
+*/
+func PositionCorrection(a, b model.WorldObject, m CollisionManifold){
+
+	bodyA := a.GetBody()
+	bodyB := b.GetBody()
+
+	var invMassA float32
+	var invMassB float32
+
+	if bodyA != nil{
+		invMassA = bodyA.GetInvMass()
+	}
+
+	if bodyB != nil{
+		invMassB = bodyB.GetInvMass()
+	}
+
+	const percent float32 = 0.8
+	const slop float32 = 0.01
+
+	if invMassA + invMassB == 0{
+		return
+	}
+
+	correctionMag := (smath.MaxF32(m.Penetration - slop, 0) / (invMassA + invMassB)) * percent
+	correction := m.Normal.Multiply(correctionMag)
+	// correction := m.Normal.Multiply(m.Penetration / (invMassA + invMassB))
+
+	newAPosition := a.GetTransform().Position.Subtract(correction.Multiply(invMassA))
+	newBPosition := b.GetTransform().Position.Add(correction.Multiply(invMassB))
+	a.SetPosition(&newAPosition)
+	b.SetPosition(&newBPosition)
+}
+
+
+/*
+	Impulse instantly changes velocity.
+	J = m d(v)
+	d(v) = J/m
+*/
+func ResolveImpulse(a, b model.WorldObject, m CollisionManifold){
+	// var invMassA float32 = a.GetBody().GetInvMass()
+	// var invMassB float32 = b.GetBody().GetInvMass()
+
+	bodyA := a.GetBody()
+	bodyB := b.GetBody()
+
+	var invMassA float32
+	var invMassB float32
+	var velA smath.Vec2
+	var velB smath.Vec2
+	var e float32
+
+	if bodyA != nil{
+		invMassA = bodyA.GetInvMass()
+		velA = bodyA.Velocity
+	}
+
+	if bodyB != nil{
+		invMassB = bodyB.GetInvMass()
+		velB = bodyB.Velocity
+	}
+
+	if invMassA + invMassB == 0{
+		return
+	}
+
+	rv := velB.Subtract(velA)
+	velAlongNorml := rv.Dot(m.Normal)
+
+	if velAlongNorml > 0{
+		return
+	}
+
+	if bodyA !=  nil && bodyB != nil{
+		e = min(a.GetBody().Restituion, b.GetBody().Restituion)
+	}
+
+	j := -(1 + e) * velAlongNorml
+	j /= (invMassA + invMassB)
+
+	impulse := m.Normal.Multiply(j)
+	
+	if bodyA != nil{
+		a.GetBody().Velocity = a.GetBody().Velocity.Subtract(impulse.Multiply(invMassA))
+	}
+
+	if bodyB != nil{
+		b.GetBody().Velocity = b.GetBody().Velocity.Add(impulse.Multiply(invMassB)) 
+	}
 }

@@ -6,6 +6,7 @@ import (
 
 	"github.com/neerajsurjaye/spen/internal/builder"
 	"github.com/neerajsurjaye/spen/internal/model"
+	"github.com/neerajsurjaye/spen/internal/physics"
 	"github.com/neerajsurjaye/spen/internal/simulation"
 	"github.com/neerajsurjaye/spen/internal/state"
 	"github.com/neerajsurjaye/spen/internal/utils"
@@ -21,6 +22,8 @@ func main() {
 	state.InitEngine()
 	state.InitWorld()
 	state.InitInputState()
+	physics.InitCollisionTable()
+
 	
 	engine := state.EngineInstance()
 	world := state.WorldInstance()
@@ -47,11 +50,11 @@ func main() {
 	greatColor := model.Color{R: 1, G: 1, B: 1, A: 1}
 	circle1 := model.GetCircle(0, 0 , 100, 0, greatColor)
 	circle2 := model.GetCircle(500.2, 400 , 230, math.Pi / 2, greatColor)
-	circle3 := model.GetCircle(-250, 400 , 120, math.Pi / 3, greatColor)
+	circle3 := model.GetCircle(0, 400 , 120, math.Pi / 3, greatColor)
 
-	circle1.SetBody(0, 100, 10)
-	circle2.SetBody(0, 0, 100)
-	circle3.SetBody(0, 0, 100)
+	circle1.SetBody(0, 100, 10, 0.1)
+	circle2.SetBody(0, 0, 100, 0.1)
+	circle3.SetBody(0, 0, 100, 0.1)
 
 	world.AddObject(circle1, circleMesh)
 	world.AddObject(circle2, circleMesh)
@@ -62,7 +65,7 @@ func main() {
 	world.AddObject(ground, wallMesh)
 
 	movingSquare := model.GetWall(300, -100, 20, 40, math.Pi / 3, *groundColor)
-	movingSquare.SetBody(0, 0, 100)
+	movingSquare.SetBody(0, 0, 100, 0.1)	
 	world.AddObject(movingSquare, wallMesh)
 
 	simulation.StartLoop()
