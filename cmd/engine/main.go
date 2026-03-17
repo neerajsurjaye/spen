@@ -12,7 +12,7 @@ import (
 	"github.com/neerajsurjaye/spen/internal/utils"
 )
 
-func init(){
+func init() {
 	// Locks the thread to one OS thread. Open gl issue.
 	runtime.LockOSThread()
 }
@@ -24,7 +24,6 @@ func main() {
 	state.InitInputState()
 	physics.InitCollisionTable()
 
-	
 	engine := state.EngineInstance()
 	world := state.WorldInstance()
 
@@ -36,10 +35,10 @@ func main() {
 
 	simulation.InitOpenGl()
 
-	world.DebugLines.Init(utils.CreateProgram("shader/line/line.frag" , "shader/line/line.vert"))
-	world.Grid.Init(100, 500) 
+	world.DebugLines.Init(utils.CreateProgram("shader/line/line.frag", "shader/line/line.vert"))
+	world.Grid.Init(100, 500)
 
-// ====================================================================
+	// ====================================================================
 
 	circleBuilder := builder.GetCircleBuilder().Compute()
 	circleMesh := circleBuilder.BuildObject()
@@ -48,26 +47,29 @@ func main() {
 	wallMesh := wallBuilder.BuildObject()
 
 	greatColor := model.Color{R: 1, G: 1, B: 1, A: 1}
-	circle1 := model.GetCircle(0, 0 , 100, 0, greatColor)
-	circle2 := model.GetCircle(500.2, 400 , 230, math.Pi / 2, greatColor)
-	circle3 := model.GetCircle(0, 400 , 120, math.Pi / 3, greatColor)
+	circle1 := model.GetCircle(0, -20, 100, 0, greatColor)
+	// circle2 := model.GetCircle(400, 100, 100, math.Pi/2, greatColor)
+	// circle3 := model.GetCircle(450, 400, 100, math.Pi/3, greatColor)
 
-	circle1.SetBody(0, 100, 10, 0.1)
-	circle2.SetBody(0, 0, 100, 0.1)
-	circle3.SetBody(0, 0, 100, 0.1)
+	circle1.SetBody(0, 0, 1000, 1)
+	// circle2.SetBody(0, 100, 0.1, 0.8)
+	// circle3.SetBody(0, -200, 1000, 0.8)
 
 	world.AddObject(circle1, circleMesh)
-	world.AddObject(circle2, circleMesh)
-	world.AddObject(circle3, circleMesh)
+	// world.AddObject(circle2, circleMesh)
+	// world.AddObject(circle3, circleMesh)
 
 	groundColor := model.GetColor(0.3, 1, 0.3, 1)
-	ground := model.GetWall(0, -200, 500, 20, 0, *groundColor)
+	ground := model.GetWall(0, -200, 500, 20, math.Pi/100, *groundColor)
 	world.AddObject(ground, wallMesh)
 
-	movingSquare := model.GetWall(300, -100, 20, 40, math.Pi / 3, *groundColor)
-	movingSquare.SetBody(0, 0, 100, 0.1)	
-	world.AddObject(movingSquare, wallMesh)
+	ceil := model.GetWall(0, 400, 500, 20, 0, *groundColor)
+	world.AddObject(ceil, wallMesh)
+
+	// movingSquare := model.GetWall(300, -100, 20, 40, math.Pi/3, *groundColor)
+	// movingSquare.SetBody(0, 0, 100, 0.1)
+	// world.AddObject(movingSquare, wallMesh)
 
 	simulation.StartLoop()
-	
+
 }
