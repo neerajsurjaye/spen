@@ -7,7 +7,7 @@ import (
 )
 
 func DebugBody(debugLines *DebugLines, object model.WorldObject, color *model.Color) {
-	if object.IsStatic(){
+	if object.IsStatic() {
 		return
 	}
 
@@ -15,9 +15,9 @@ func DebugBody(debugLines *DebugLines, object model.WorldObject, color *model.Co
 	velocity := object.GetBody().Velocity
 
 	mag := float64(velocity.Magnitude())
-	scaledMag := float32(math.Log(mag + 1)) * 10
+	scaledMag := float32(math.Log(mag+1)) * 10
 
-	if scaledMag > mArrowLen{
+	if scaledMag > mArrowLen {
 		scaledMag = mArrowLen
 	}
 	scaledVelocity := velocity.Normalize().Multiply(scaledMag)
@@ -25,5 +25,5 @@ func DebugBody(debugLines *DebugLines, object model.WorldObject, color *model.Co
 	base := object.GetTransform().Position
 	end := base.Add(scaledVelocity)
 
-	debugLines.AddArrow(base , end, color)
+	debugLines.AddArrow(base, end, color)
 }
