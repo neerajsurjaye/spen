@@ -1,7 +1,6 @@
 package physics
 
 import (
-	"fmt"
 	"math"
 
 	"github.com/neerajsurjaye/spen/internal/enums"
@@ -278,6 +277,9 @@ func ResolveImpulse(a, b model.WorldObject, m CollisionManifold) {
 	var invMassB float32
 	var velA smath.Vec2
 	var velB smath.Vec2
+	/*
+		Restituion cofficient. Velocity of approach / velocity of speration
+	*/
 	var e float32
 
 	if bodyA != nil {
@@ -295,10 +297,12 @@ func ResolveImpulse(a, b model.WorldObject, m CollisionManifold) {
 	}
 
 	rv := velB.Subtract(velA)
+	/*
+		Checks if objects are moving towards or away from each other.
+	*/
 	velAlongNorml := rv.Dot(m.Normal)
 
 	if velAlongNorml > 0 {
-		fmt.Println("Vel Along normal > 0", a, b, m)
 		return
 	}
 

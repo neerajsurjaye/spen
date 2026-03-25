@@ -1,0 +1,90 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "required": ["circles", "walls", "ui"],
+    "additionalProperties": false,
+    "properties": {
+        "$schema": { "type": "string" },
+        "circles": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "transforms": {
+                        "type": "object",
+                        "properties": {
+                            "posX": { "type": "number" },
+                            "posY": { "type": "number" },
+                            "scale": { "type": "number" }
+                        },
+                        "required": ["posX", "posY", "scale"],
+                        "additionalProperties": false
+                    },
+                    "color": {
+                        "type": "array",
+                        "items": { "type": "number" },
+                        "minItems": 4,
+                        "maxItems": 4
+                    },
+                    "body": {
+                        "type": "object",
+                        "properties": {
+                            "velX": { "type": "number" },
+                            "velY": { "type": "number" },
+                            "mass": { "type": "number" },
+                            "restitution": { "type": "number" }
+                        },
+                        "required": ["velX", "velY", "mass", "restitution"],
+                        "additionalProperties": false
+                    }
+                },
+                "required": ["transforms", "color"],
+                "additionalProperties": false
+            }
+        },
+        "walls": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "transforms": {
+                        "type": "object",
+                        "properties": {
+                            "posX": { "type": "number" },
+                            "posY": { "type": "number" },
+                            "scaleX": { "type": "number" },
+                            "scaleY": { "type": "number" }
+                        },
+                        "required": ["posX", "posY", "scaleX", "scaleY"],
+                        "additionalProperties": false
+                    },
+                    "color": {
+                        "type": "array",
+                        "items": { "type": "number" },
+                        "minItems": 4,
+                        "maxItems": 4
+                    }
+                },
+                "required": ["transforms", "color"],
+                "additionalProperties": false
+            }
+        },
+        "ui": {
+            "type": "object",
+            "properties": {
+                "width": { "type": "number" },
+                "height": { "type": "number" },
+                "title": { "type": "string" }
+            },
+            "required": ["width", "height", "title"],
+            "additionalProperties": false
+        },
+        "world": {
+            "type": "object",
+            "properties": {
+                "gravity": { "type": "number" }
+            },
+            "additionalProperties": false
+        }
+    }
+}

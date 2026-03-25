@@ -6,11 +6,10 @@ type Gravity struct {
 	Acceleration smath.Vec2
 }
 
-func NewGravity() Gravity{
-	return Gravity{Acceleration: smath.Vec2{X : 0, Y : GRAVITATIONAL_ACCELERATION}}
+func NewGravity() Gravity {
+	return Gravity{Acceleration: smath.Vec2{X: 0, Y: GRAVITATIONAL_ACCELERATION}}
 }
 
-func (g *Gravity) GetForce(mass float32) smath.Vec2{
+func (g *Gravity) GetForce(mass float32) smath.Vec2 {
 	return g.Acceleration.Multiply(mass)
 }
-

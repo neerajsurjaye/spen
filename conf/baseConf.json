@@ -1,0 +1,48 @@
+{
+    "circles": [
+        {
+            "transforms": {
+                "posX": 0,
+                "poxY": 0,
+                "scale": 1
+            },
+            "color": [0.6, 0.4, 0.3, 1],
+            "body": {
+                "velX": 0,
+                "velY": 0,
+                "mass": 0,
+                "restitution": 0.3
+            }
+        },
+        {
+            "transforms": {
+                "posX": 0,
+                "poxY": 0,
+                "scale": 1
+            },
+            "color": [0.6, 0.4, 0.3, 1],
+            "body": {
+                "velX": 0,
+                "velY": 0,
+                "mass": 0,
+                "restitution": 0.3
+            }
+        }
+    ],
+    "walls": [
+        {
+            "transforms": {
+                "posX": 0,
+                "poxY": 0,
+                "scaleX": 1,
+                "scaleY": 1
+            },
+            "color": [0.6, 0.4, 0.3, 1]
+        }
+    ],
+    "ui": {
+        "width": 0,
+        "height": 0,
+        "title": "John doe"
+    }
+}

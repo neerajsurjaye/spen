@@ -20,7 +20,7 @@ func GetCircle(x float32, y float32, radius float32, rotation float32, col Color
 	return c
 }
 
-func (c *Circle) GetColor() *Color{
+func (c *Circle) GetColor() *Color {
 	return &c.Color
 }
 
@@ -28,12 +28,12 @@ func (c *Circle) SetColor(col Color) {
 	c.Color = col
 }
 
-func (c *Circle) GetTransform() *Transform{
+func (c *Circle) GetTransform() *Transform {
 	return &c.Transform
 }
 
 func (c *Circle) SetTransform(x float32, y float32, radius float32, rot float32) {
-	c.Transform = GetTransform(x, y, radius,radius, rot)
+	c.Transform = GetTransform(x, y, radius, radius, rot)
 	c.Transform.Position.X = x
 	c.Transform.Position.Y = y
 	c.Transform.Radians = rot
@@ -41,21 +41,21 @@ func (c *Circle) SetTransform(x float32, y float32, radius float32, rot float32)
 	c.updateAABB()
 }
 
-func (c *Circle) SetPosition(pos *smath.Vec2){
+func (c *Circle) SetPosition(pos *smath.Vec2) {
 	c.Transform.Position = *pos
 	c.updateAABB()
 }
 
-func (c *Circle) DeltaTransform(dx , dy, dsX ,dsY, dr float32){
+func (c *Circle) DeltaTransform(dx, dy, dsX, dsY, dr float32) {
 	c.DeltaCircleTransform(dx, dy, dsX)
 }
 
-func (c *Circle) DeltaCircleTransform(dx float32, dy float32,  dr float32) {
+func (c *Circle) DeltaCircleTransform(dx float32, dy float32, dr float32) {
 	c.Transform.DeltaLocation(dx, dy, dr, dr, 0)
 	c.updateAABB()
 }
 
-func (c *Circle) GetAABB() *AABB{
+func (c *Circle) GetAABB() *AABB {
 	return &c.AABB
 }
 
@@ -66,26 +66,25 @@ func (c *Circle) updateAABB() {
 	c.AABB.MaxY = c.Transform.Position.Y + c.Transform.Scale.Y
 }
 
-
-func (c *Circle) SetBody(velX , velY, mass, restitution float32){
+func (c *Circle) SetBody(velX, velY, mass, restitution float32) {
 	c.Body = GetBody(velX, velY, mass, restitution)
 }
 
-func (c *Circle) GetBody() *Body{
-	if c.Body != nil{
+func (c *Circle) GetBody() *Body {
+	if c.Body != nil {
 		return c.Body
 	}
 	return nil
 }
 
-func (c *Circle) IsStatic() bool{
+func (c *Circle) IsStatic() bool {
 	return c.Body == nil
 }
 
-func (c *Circle) GetColliderType() enums.ColliderType{
+func (c *Circle) GetColliderType() enums.ColliderType {
 	return enums.ColliderCircle
 }
 
-func (c *Circle) GetRadius() float32{
+func (c *Circle) GetRadius() float32 {
 	return c.Transform.Scale.X
 }
