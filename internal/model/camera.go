@@ -9,12 +9,12 @@ type Camera struct {
 	Y float32
 }
 
-func (c *Camera) View() mgl32.Mat4{
+func (c *Camera) View() mgl32.Mat4 {
 	//Translate world by inverse of camera location
-	return mgl32.Translate3D(-c.X , -c.Y, 0)
+	return mgl32.Translate3D(-c.X, -c.Y, 0)
 }
 
-func (c *Camera) MoveDelta(dx float32, dy float32){
+func (c *Camera) MoveDelta(dx float32, dy float32) {
 	c.X += dx
 	c.Y += dy
 

@@ -15,9 +15,9 @@
                         "properties": {
                             "posX": { "type": "number" },
                             "posY": { "type": "number" },
-                            "scale": { "type": "number" }
+                            "radius": { "type": "number" }
                         },
-                        "required": ["posX", "posY", "scale"],
+                        "required": ["posX", "posY", "radius"],
                         "additionalProperties": false
                     },
                     "color": {
@@ -53,9 +53,16 @@
                             "posX": { "type": "number" },
                             "posY": { "type": "number" },
                             "scaleX": { "type": "number" },
-                            "scaleY": { "type": "number" }
+                            "scaleY": { "type": "number" },
+                            "rotation": { "type": "number" }
                         },
-                        "required": ["posX", "posY", "scaleX", "scaleY"],
+                        "required": [
+                            "posX",
+                            "posY",
+                            "scaleX",
+                            "scaleY",
+                            "rotation"
+                        ],
                         "additionalProperties": false
                     },
                     "color": {
