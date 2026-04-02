@@ -94,20 +94,22 @@ func draw() bool {
 	window.SwapBuffers()
 	glfw.PollEvents()
 
+	zoomValue := world.Camera.Zoom
+
 	if window.GetKey(glfw.KeyW) == glfw.Press {
-		world.Camera.MoveDelta(0, 10)
+		world.Camera.MoveDelta(0, MoveDelta/zoomValue)
 	}
 
 	if window.GetKey(glfw.KeyS) == glfw.Press {
-		world.Camera.MoveDelta(0, -10)
+		world.Camera.MoveDelta(0, -MoveDelta/zoomValue)
 	}
 
 	if window.GetKey(glfw.KeyA) == glfw.Press {
-		world.Camera.MoveDelta(-10, 0)
+		world.Camera.MoveDelta(-MoveDelta/zoomValue, 0)
 	}
 
 	if window.GetKey(glfw.KeyD) == glfw.Press {
-		world.Camera.MoveDelta(+10, 0)
+		world.Camera.MoveDelta(MoveDelta/zoomValue, 0)
 	}
 
 	if window.GetKey(glfw.KeyR) == glfw.Press {
@@ -131,6 +133,16 @@ func draw() bool {
 		if engine.IsPaused {
 			engine.StepSim = true
 		}
+	}
+
+	if window.GetKey(glfw.KeyComma) == glfw.Press {
+		// if utils.IsKeyPressed(window, glfw.KeyComma) {
+		world.Camera.ZoomDelta(ZoomDelta)
+	}
+
+	if window.GetKey(glfw.KeyPeriod) == glfw.Press {
+		// if utils.IsKeyPressed(window, glfw.KeyPeriod) {
+		world.Camera.ZoomDelta(-ZoomDelta)
 	}
 
 	Render()

@@ -44,9 +44,10 @@ func (w *World) SetBackground(r float32, g float32, b float32, a float32) {
 	w.Background = model.Color{R: r, G: g, B: b, A: a}
 }
 
-func (w *World) SetCamera(x float32, y float32) {
+func (w *World) SetCamera(x float32, y float32, zoom float32) {
 	w.Camera.X = x
 	w.Camera.Y = y
+	w.Camera.Zoom = zoom
 }
 
 func (w *World) GetOrthoProjection() mgl32.Mat4 {
