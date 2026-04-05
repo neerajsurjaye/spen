@@ -5,7 +5,6 @@ import (
 
 	"github.com/go-gl/gl/all-core/gl"
 	"github.com/go-gl/glfw/v3.3/glfw"
-	"github.com/neerajsurjaye/spen/internal/force"
 	"github.com/neerajsurjaye/spen/internal/model"
 	"github.com/neerajsurjaye/spen/internal/physics"
 	"github.com/neerajsurjaye/spen/internal/smath"
@@ -160,6 +159,8 @@ func Render() {
 
 func performPhysics(worldObjects []model.WorldObject, dt float32) {
 
+	world := state.WorldInstance()
+
 	for i := range worldObjects {
 		object := worldObjects[i]
 
@@ -168,8 +169,7 @@ func performPhysics(worldObjects []model.WorldObject, dt float32) {
 		}
 
 		body := object.GetBody()
-		gravity := force.NewGravity()
-
+		gravity := world.Gravity
 		body.AddForce(gravity.GetForce(body.Mass))
 		body.IntegrateVelocity(dt)
 

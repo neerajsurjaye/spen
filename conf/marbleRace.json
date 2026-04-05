@@ -1,0 +1,264 @@
+{
+    "$schema": "./schema/schema.json",
+
+    "walls": [
+        {
+            "transforms": {
+                "posX": -180,
+                "posY": 0,
+                "scaleX": 10,
+                "scaleY": 170,
+                "rotation": 45
+            },
+            "color": [0.6, 0.8, 0.6, 0]
+        },
+        {
+            "transforms": {
+                "posX": 180,
+                "posY": 0,
+                "scaleX": 10,
+                "scaleY": 170,
+                "rotation": -45
+            },
+            "color": [0.6, 0.8, 0.6, 0]
+        },
+        {
+            "transforms": {
+                "posX": 0,
+                "posY": -250,
+                "scaleX": 50,
+                "scaleY": 50,
+                "rotation": 45
+            },
+            "color": [0.6, 0.8, 0.6, 0]
+        },
+        {
+            "transforms": {
+                "posX": -100,
+                "posY": -400,
+                "scaleX": 10,
+                "scaleY": 170,
+                "rotation": -45
+            },
+            "color": [0.6, 0.8, 0.6, 0]
+        },
+        {
+            "transforms": {
+                "posX": 250,
+                "posY": -400,
+                "scaleX": 10,
+                "scaleY": 130,
+                "rotation": -25
+            },
+            "color": [0.6, 0.8, 0.6, 0]
+        },
+        {
+            "transforms": {
+                "posX": 50,
+                "posY": -400,
+                "scaleX": 10,
+                "scaleY": 130,
+                "rotation": 25
+            },
+            "color": [0.6, 0.8, 0.6, 0]
+        },
+        {
+            "transforms": {
+                "posX": -170,
+                "posY": -700,
+                "scaleX": 10,
+                "scaleY": 140,
+                "rotation": 65
+            },
+            "color": [0.6, 0.8, 0.6, 0]
+        },
+        {
+            "transforms": {
+                "posX": 170,
+                "posY": -700,
+                "scaleX": 10,
+                "scaleY": 140,
+                "rotation": -65
+            },
+            "color": [0.6, 0.8, 0.6, 0]
+        },
+        {
+            "transforms": {
+                "posX": 78,
+                "posY": -900,
+                "scaleX": 10,
+                "scaleY": 90,
+                "rotation": 65
+            },
+            "color": [0.6, 0.8, 0.6, 0]
+        },
+        {
+            "transforms": {
+                "posX": -78,
+                "posY": -900,
+                "scaleX": 10,
+                "scaleY": 90,
+                "rotation": -65
+            },
+            "color": [0.6, 0.8, 0.6, 0]
+        },
+        {
+            "transforms": {
+                "posX": -170,
+                "posY": -1200,
+                "scaleX": 10,
+                "scaleY": 120,
+                "rotation": 65
+            },
+            "color": [0.6, 0.8, 0.6, 0]
+        },
+        {
+            "transforms": {
+                "posX": 140,
+                "posY": -1200,
+                "scaleX": 10,
+                "scaleY": 120,
+                "rotation": 65
+            },
+            "color": [0.6, 0.8, 0.6, 0]
+        },
+        {
+            "transforms": {
+                "posX": -170,
+                "posY": -1400,
+                "scaleX": 10,
+                "scaleY": 150,
+                "rotation": 65
+            },
+            "color": [0.6, 0.8, 0.6, 0]
+        },
+        {
+            "transforms": {
+                "posX": 170,
+                "posY": -1400,
+                "scaleX": 10,
+                "scaleY": 150,
+                "rotation": -65
+            },
+            "color": [0.6, 0.8, 0.6, 0]
+        },
+        {
+            "transforms": {
+                "posX": -45,
+                "posY": -1550,
+                "scaleX": 10,
+                "scaleY": 100,
+                "rotation": 0
+            },
+            "color": [0.6, 0.8, 0.6, 0]
+        },
+        {
+            "transforms": {
+                "posX": 45,
+                "posY": -1550,
+                "scaleX": 10,
+                "scaleY": 100,
+                "rotation": 0
+            },
+            "color": [0.6, 0.8, 0.6, 0]
+        },
+        {
+            "transforms": {
+                "posX": 0,
+                "posY": -1650,
+                "scaleX": 10,
+                "scaleY": 55,
+                "rotation": 90
+            },
+            "color": [0.6, 0.8, 0.6, 0]
+        },
+        {
+            "transforms": {
+                "posX": -300,
+                "posY": -500,
+                "scaleX": 10,
+                "scaleY": 1000,
+                "rotation": 0
+            },
+            "color": [0, 1, 1, 0]
+        },
+        {
+            "transforms": {
+                "posX": 300,
+                "posY": -500,
+                "scaleX": 10,
+                "scaleY": 1000,
+                "rotation": 0
+            },
+            "color": [0, 1, 1, 0]
+        }
+    ],
+
+    "circles": [
+        {
+            "transforms": {
+                "posX": 0,
+                "posY": 0,
+                "radius": 10
+            },
+            "color": [1, 1, 1, 1],
+            "body": {
+                "velX": 0,
+                "velY": 0,
+                "mass": 500,
+                "restitution": 0.6
+            }
+        },
+        {
+            "transforms": {
+                "posX": -20,
+                "posY": 0,
+                "radius": 10
+            },
+            "color": [1, 0.2, 0.2, 1],
+            "body": {
+                "velX": 0,
+                "velY": 0,
+                "mass": 500,
+                "restitution": 0.7
+            }
+        },
+        {
+            "transforms": {
+                "posX": 0,
+                "posY": 0,
+                "radius": 10
+            },
+            "color": [0.2, 1, 0.2, 1],
+            "body": {
+                "velX": -10,
+                "velY": 0,
+                "mass": 500,
+                "restitution": 0.75
+            }
+        },
+        {
+            "transforms": {
+                "posX": 10,
+                "posY": 0,
+                "radius": 10
+            },
+            "color": [1, 0.2, 1, 1],
+            "body": {
+                "velX": 0,
+                "velY": 0,
+                "mass": 500,
+                "restitution": 0.8
+            }
+        }
+    ],
+    "ui": {
+        "width": 800,
+        "height": 800,
+        "title": "Test Config"
+    },
+    "world": {
+        "gravity": [0, -500],
+        "worldBackground": [0.3, 0.3, 0.3, 0.3]
+    }
+}

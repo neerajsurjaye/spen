@@ -8,6 +8,7 @@ import (
 	"runtime"
 
 	"github.com/neerajsurjaye/spen/internal/builder"
+	"github.com/neerajsurjaye/spen/internal/force"
 	"github.com/neerajsurjaye/spen/internal/model"
 	"github.com/neerajsurjaye/spen/internal/physics"
 	"github.com/neerajsurjaye/spen/internal/simulation"
@@ -23,7 +24,7 @@ func init() {
 
 func main() {
 
-	file, err := os.ReadFile("./conf/testConfig.json")
+	file, err := os.ReadFile("./conf/marbleRace.json")
 
 	var config model.Config
 	err = json.Unmarshal(file, &config)
@@ -47,7 +48,14 @@ func main() {
 	engine.GlfwState.Window = simulation.InitGlfw()
 
 	world.SetCamera(0, 0, 1)
-	world.SetBackground(0.2, 0.2, 0.2, 1)
+	world.SetBackground(config.World.WorldBackground[0], config.World.WorldBackground[1], config.World.WorldBackground[2], config.World.WorldBackground[3])
+
+	if config.World.Gravity != nil {
+		gravity := *config.World.Gravity
+		world.SetGravity(force.NewGravity(&smath.Vec2{X: gravity[0], Y: gravity[1]}))
+	} else {
+		world.SetGravity(force.NewGravity(nil))
+	}
 
 	simulation.InitOpenGl()
 

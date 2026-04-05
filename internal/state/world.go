@@ -2,6 +2,7 @@ package state
 
 import (
 	"github.com/go-gl/mathgl/mgl32"
+	"github.com/neerajsurjaye/spen/internal/force"
 	"github.com/neerajsurjaye/spen/internal/mesh"
 	"github.com/neerajsurjaye/spen/internal/model"
 	"github.com/neerajsurjaye/spen/internal/physics"
@@ -21,6 +22,7 @@ type World struct {
 	Background model.Color
 	Grid       mesh.Grid
 	DebugDraw  bool
+	Gravity    force.Gravity
 }
 
 var world *World = nil
@@ -48,6 +50,10 @@ func (w *World) SetCamera(x float32, y float32, zoom float32) {
 	w.Camera.X = x
 	w.Camera.Y = y
 	w.Camera.Zoom = zoom
+}
+
+func (w *World) SetGravity(gravity force.Gravity) {
+	w.Gravity = gravity
 }
 
 func (w *World) GetOrthoProjection() mgl32.Mat4 {

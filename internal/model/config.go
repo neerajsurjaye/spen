@@ -4,6 +4,7 @@ type Config struct {
 	Circles []CircleConfig `json:"circles"`
 	Walls   []WallConfig   `json:"walls"`
 	Ui      UIConfig       `json:"ui"`
+	World   WorldConfig    `json:"world"`
 }
 
 type CircleConfig struct {
@@ -42,4 +43,9 @@ type BodyConfig struct {
 	VelY       float32 `json:"velY"`
 	Mass       float32 `json:"mass"`
 	Restititon float32 `json:"restitution"`
+}
+
+type WorldConfig struct {
+	WorldBackground []float32  `json:"worldBackground"`
+	Gravity         *[]float32 `json:"gravity"`
 }

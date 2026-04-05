@@ -6,8 +6,11 @@ type Gravity struct {
 	Acceleration smath.Vec2
 }
 
-func NewGravity() Gravity {
-	return Gravity{Acceleration: smath.Vec2{X: 0, Y: GRAVITATIONAL_ACCELERATION}}
+func NewGravity(gravAcc *smath.Vec2) Gravity {
+	if gravAcc == nil {
+		return Gravity{Acceleration: smath.Vec2{X: 0, Y: GRAVITATIONAL_ACCELERATION}}
+	}
+	return Gravity{Acceleration: *gravAcc}
 }
 
 func (g *Gravity) GetForce(mass float32) smath.Vec2 {
