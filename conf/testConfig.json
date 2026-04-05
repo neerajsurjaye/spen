@@ -94,5 +94,9 @@
         "width": 800,
         "height": 800,
         "title": "Test Config"
+    },
+    "world": {
+        "gravity": [0, -500],
+        "worldBackground": [0.3, 0.3, 0.3, 0.3]
     }
 }

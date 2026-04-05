@@ -24,7 +24,13 @@ func init() {
 
 func main() {
 
-	file, err := os.ReadFile("./conf/marbleRace.json")
+	if len(os.Args) <= 1 {
+		panic("Please provide path to world configuration file.")
+	}
+
+	filePath := os.Args[1]
+
+	file, err := os.ReadFile(filePath)
 
 	var config model.Config
 	err = json.Unmarshal(file, &config)
