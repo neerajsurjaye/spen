@@ -1,0 +1,40 @@
+{
+    "$schema": "./schema/schema.json",
+    "circles": [
+        {
+            "transforms": {
+                "posX": 0,
+                "posY": 0,
+                "radius": 100
+            },
+            "color": [0.6, 0.6, 0.9, 1],
+            "body": {
+                "velX": 0,
+                "velY": 0,
+                "mass": 100,
+                "restitution": 0.3
+            }
+        }
+    ],
+    "walls": [
+        {
+            "transforms": {
+                "posX": 0,
+                "posY": -200,
+                "scaleX": 20,
+                "scaleY": 400,
+                "rotation": -45
+            },
+            "color": [0.6, 0.9, 0.6, 1]
+        }
+    ],
+    "ui": {
+        "width": 800,
+        "height": 800,
+        "title": "John doe"
+    },
+    "world": {
+        "gravity": [0, -500],
+        "worldBackground": [0.3, 0.3, 0.3, 0.3]
+    }
+}

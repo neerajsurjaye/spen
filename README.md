@@ -43,3 +43,4 @@ Supports:
 
 ![Marbels](assets/marbels_start.png)
 ![Marbels Debug](assets/marbels_end_debug.png)
+![Close collision](assets/closerCollision.png)
