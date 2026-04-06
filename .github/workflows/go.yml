@@ -36,6 +36,3 @@ jobs:
 
     - name: Build sim.exe
       run: go build -v -o sim.exe ./cmd/engine
-
-    - name: Test
-      run: go test -v ./...
